@@ -5,8 +5,35 @@ import random
 from classes.Creature import Creature
 # This is a creature that can detect and track food
 class SearchingHerbivore(Creature):
-    def __init__(self, SCREEN_WIDTH, SCREEN_HEIGHT):
-        Creature.__init__(self, SCREEN_WIDTH, SCREEN_HEIGHT)
+    def __init__(
+        self, 
+        SCREEN_WIDTH,
+        SCREEN_HEIGHT,
+        max_size=100,
+        width=25,
+        height=25,
+        acc_increment=.33,
+        acc_max=1.0,
+        vel_max=5.0,
+        acc_vert=0,
+        acc_hor=0,
+        vel_vert=0,
+        vel_hor=0
+    ):
+        Creature.__init__(
+            self, 
+            SCREEN_WIDTH, 
+            SCREEN_HEIGHT,
+            max_size=max_size,
+            width=width,
+            height=height,
+            acc_increment=acc_increment,
+            acc_max=acc_max,
+            vel_max=vel_max,
+            acc_vert=acc_vert,
+            acc_hor=acc_hor,
+            vel_vert=vel_vert,
+            vel_hor=vel_hor)
         self.type = 'searcher'
         self.search_distance = math.sqrt(math.pow(self.width, 2) + math.pow(self.height, 2)) * 10  # size of the diagona * a multiplier
     

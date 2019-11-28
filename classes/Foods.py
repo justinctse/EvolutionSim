@@ -4,7 +4,7 @@ class BasicFood(pygame.sprite.Sprite):
     def __init__(self, SCREEN_WIDTH, SCREEN_HEIGHT):
         super(BasicFood, self).__init__()
         self.type = 'basic'
-        self.size = random.randint(5,15)
+        self.size = random.randint(5,10)
         self.value = int(self.size/2)
         self.surf = pygame.Surface((self.size, self.size))
         self.surf.fill((65, 218, 101))
@@ -15,7 +15,7 @@ class SuperFood(pygame.sprite.Sprite):
     def __init__(self, SCREEN_WIDTH, SCREEN_HEIGHT):
         super(SuperFood, self).__init__()
         self.type = 'super'
-        self.size = random.randint(20,40)
+        self.size = random.randint(8,18)
         self.value = int(self.size/1.5)
         self.surf = pygame.Surface((self.size, self.size))
         self.surf.fill((199, 89, 255))

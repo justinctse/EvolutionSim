@@ -75,11 +75,6 @@ while running:
 
     # Fill the screen with white
     screen.fill((255, 255, 255))
-    
-    # Get coordinates of food so that Creatures can track
-    # food_coordinates = []
-    # for food in foods:
-    #     food_coordinates.append((food.rect[0], food.rect[1]))
 
     for entity in creatures:
         # Check for collisions
