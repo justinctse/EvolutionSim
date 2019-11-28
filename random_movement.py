@@ -66,7 +66,7 @@ while running:
             if event.key == K_ESCAPE:
                 running = False
             if event.key == K_SPACE:
-                pause()
+                running = pause(SCREEN_WIDTH, SCREEN_HEIGHT, screen)
 
     # Fill the screen with white
     screen.fill((255, 255, 255))
