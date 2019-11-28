@@ -5,7 +5,7 @@ import numpy as np
 from classes.Creature import Creature 
 from classes.SearchingHerbivore import SearchingHerbivore
 from classes.BasicHerbivore import BasicHerbivore
-from classes.Food import Food
+from classes.Foods import BasicFood, SuperFood
 
 # Import pygame.locals for easier access to key coordinates
 # Updated to conform to flake8 and black standards
@@ -23,7 +23,8 @@ from pygame.locals import (
 # Define constants
 SCREEN_WIDTH, SCREEN_HEIGHT = 1200, 800
 frame_rate = 60
-food_amount = 100
+basic_food_amount = 75
+super_food_amount = 25
 num_basic_herbivores = 1
 num_searching_herbivores = 5
 
@@ -48,10 +49,15 @@ for i in range(0, num_searching_herbivores):
     all_sprites.add(creature)
     creatures.add(creature)
 
-for i in range(0,food_amount):
-    food = Food(SCREEN_WIDTH, SCREEN_HEIGHT)
+for i in range(0,basic_food_amount):
+    food = BasicFood(SCREEN_WIDTH, SCREEN_HEIGHT)
     all_sprites.add(food)
     foods.add(food) 
+
+for i in range(0, super_food_amount):
+    food = SuperFood(SCREEN_WIDTH, SCREEN_HEIGHT)
+    all_sprites.add(food)
+    foods.add(food)
 
 running = True
 while running:
