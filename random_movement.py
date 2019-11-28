@@ -1,6 +1,7 @@
 import pygame as pygame
 import random
 import math
+import numpy as np
 
 # Import pygame.locals for easier access to key coordinates
 # Updated to conform to flake8 and black standards
@@ -25,7 +26,6 @@ class Creature(pygame.sprite.Sprite):
         self.height = 25
         self.surf = pygame.Surface((self.width, self.height))
         self.surf.fill((0, 0, 0))
-        # I'm not gonna lie, this code is questionable
         self.rect = self.surf.get_rect(
                 center=((SCREEN_WIDTH-self.surf.get_width())/2, (SCREEN_HEIGHT-self.surf.get_height())/2))
 
@@ -38,16 +38,6 @@ class Creature(pygame.sprite.Sprite):
         self.vel_vert = 0
         self.vel_hor = 0
     
-    def grow(self, growth_increment = 10):
-        if (self.width < self.max_size) & (self.height < self.max_size):
-            self.width = min(self.width + growth_increment, self.max_size)
-            self.height = min(self.height + growth_increment, self.max_size)
-            self.surf = pygame.Surface((self.width, self.height))
-            self.surf.fill((0,0,0))
-            self.rect = self.surf.get_rect(
-                center=(self.rect[0] + self.width/2, self.rect[1] + self.height/2))
-            
-
     # returns new speed, 
     def handle_max_speed(self, metric, max, increment):
         to_return = metric
@@ -56,21 +46,99 @@ class Creature(pygame.sprite.Sprite):
                 to_return = to_return - increment
             else:
                 to_return = to_return + increment
-        # if abs(metric) > max:
-        #     to_return = 0
         return to_return
 
-    def update_position(self):
-        self.vel_vert = self.vel_vert + self.acc_vert
-        self.vel_hor = self.vel_hor + self.acc_hor
-        self.acc_vert = self.acc_vert + random.uniform(-1 * self.acc_increment, self.acc_increment)
-        self.acc_hor = self.acc_hor + random.uniform(-1 * self.acc_increment, self.acc_increment)
+    def grow(self, growth_increment = 10):
+        if (self.width < self.max_size) & (self.height < self.max_size):
+            self.width = min(self.width + growth_increment, self.max_size)
+            self.height = min(self.height + growth_increment, self.max_size)
+            self.surf = pygame.Surface((self.width, self.height))
+            self.surf.fill((0,0,0))
+            # I'm not gonna lie this code is questionable
+            self.rect = self.surf.get_rect(
+                center=(self.rect[0] + self.width/2, self.rect[1] + self.height/2))
+
+# This is a creature that can detect and track food
+class CreatureTracking(Creature):
+    def __init__(self):
+        Creature.__init__(self)
+        self.type = 'tracker'
+    
+    # Get distance to the set of coordinates
+    def get_distance(self, coordinates):
+        x, y = coordinates[0], coordinates[1]
+        self_x, self_y = self.rect[0], self.rect[1]
+        return math.sqrt(math.pow(x-self_x, 2) + math.pow(y-self_y, 2))
+    
+    # Get the closest set of coordinates
+    def get_closest_food(self, all_coordinates):
+        closest_point = None
+        min_distance = 99999
+        for coordinates in all_coordinates:
+            distance = self.get_distance(coordinates)
+            if distance < min_distance:
+                closest_point = coordinates
+                min_distance = distance
+        return closest_point
+
+    def update_position(self, all_coordinates):
+        closest_point = self.get_closest_food(all_coordinates)
+        if closest_point is None:
+            self.acc_vert = 0
+            self.acc_hor = 0
+            self.vel_vert = 0
+            self.vel_hor = 0
+        else:
+            # get right direction
+            self.acc_vert = self.acc_vert + random.uniform(0, self.acc_increment) * np.sign(closest_point[1] - self.rect[1])
+            self.acc_hor = self.acc_hor + random.uniform(0, self.acc_increment) * np.sign(closest_point[0] - self.rect[0])
+            self.vel_vert = self.vel_vert + self.acc_vert
+            self.vel_hor = self.vel_hor + self.acc_hor
 
         # handling max acceleration or velocity
         self.vel_vert = self.handle_max_speed(self.vel_vert, self.vel_max, abs(self.acc_vert))
         self.vel_hor = self.handle_max_speed(self.vel_hor, self.vel_max, abs(self.acc_hor))
         self.acc_vert = self.handle_max_speed(self.acc_vert, self.acc_max, abs(self.acc_increment))
         self.acc_hor = self.handle_max_speed(self.acc_hor, self.acc_max, abs(self.acc_increment))
+
+        # hor, vert
+        self.rect.move_ip(int(self.vel_hor), int(self.vel_vert))
+        # Keep creature on the screen
+        if self.rect.left < 0:
+            self.rect.left = 0
+            self.acc_hor = self.acc_hor * -1
+            self.vel_hor = 1
+        if self.rect.right > SCREEN_WIDTH:
+            self.rect.right = SCREEN_WIDTH
+            self.acc_hor = self.acc_hor * -1
+            self.vel_hor = -1
+        if self.rect.top <= 0:
+            self.rect.top = 0
+            self.acc_vert = self.acc_vert * -1
+            self.vel_vert = 1
+        if self.rect.bottom >= SCREEN_HEIGHT:
+            self.rect.bottom = SCREEN_HEIGHT
+            self.acc_vert = self.acc_vert * -1
+            self.vel_vert = -1
+
+        
+
+class CreatureRandomMovement(Creature):
+    def __init__(self):
+        Creature.__init__(self)
+        self.type = 'random'
+
+    def update_position(self):
+        self.acc_vert = self.acc_vert + random.uniform(-1 * self.acc_increment, self.acc_increment)
+        self.acc_hor = self.acc_hor + random.uniform(-1 * self.acc_increment, self.acc_increment)
+        self.vel_vert = self.vel_vert + self.acc_vert
+        self.vel_hor = self.vel_hor + self.acc_hor
+
+        # handling max acceleration or velocity
+        self.acc_vert = self.handle_max_speed(self.acc_vert, self.acc_max, abs(self.acc_increment))
+        self.acc_hor = self.handle_max_speed(self.acc_hor, self.acc_max, abs(self.acc_increment))
+        self.vel_vert = self.handle_max_speed(self.vel_vert, self.vel_max, abs(self.acc_vert))
+        self.vel_hor = self.handle_max_speed(self.vel_hor, self.vel_max, abs(self.acc_hor))
 
         # hor, vert
         self.rect.move_ip(int(self.vel_hor), int(self.vel_vert))
@@ -118,16 +186,18 @@ creatures = pygame.sprite.Group()
 foods = pygame.sprite.Group()
 
 # Create our 'Creature'
-creature1 = Creature()
+creature1 = CreatureRandomMovement()
 all_sprites.add(creature1)
 creatures.add(creature1)
+
+creature2 = CreatureTracking()
+all_sprites.add(creature2)
+creatures.add(creature2)
 
 for i in range(0,10):
     food = Food()
     all_sprites.add(food)
-    foods.add(food)
-
-    print(food.rect[0], food.rect[1])
+    foods.add(food) 
 
 running = True
 # Our main loop
@@ -145,15 +215,23 @@ while running:
 
     # Fill the screen with black
     screen.fill((255, 255, 255))
+    
+    # Get coordinates of food
+    food_coordinates = []
+    for food in foods:
+        food_coordinates.append((food.rect[0], food.rect[1]))
 
-    # Check for collisions
-    collider = pygame.sprite.spritecollideany(creature1, foods)
-    if collider:
-        creature1.grow()
-        collider.kill()
-    #Move sprites
     for entity in creatures:
-        entity.update_position()
+        # Check for collisions
+        collider = pygame.sprite.spritecollideany(entity, foods)
+        if collider:
+            entity.grow()
+            collider.kill()
+        # Move sprites
+        if entity.type == 'random':
+            entity.update_position()
+        if entity.type == 'tracker':
+            entity.update_position(food_coordinates)
     # Draw all our sprites
     for entity in all_sprites:
         screen.blit(entity.surf, entity.rect)
