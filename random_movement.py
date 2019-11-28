@@ -27,7 +27,7 @@ frame_rate = 60
 basic_food_amount = 75
 super_food_amount = 25
 num_basic_herbivores = 0
-num_searching_herbivores = 200
+num_searching_herbivores = 1
 
 pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -72,10 +72,11 @@ while simulation_running:
     if round_counter > 1:
         print('debug2')
         for creature in creatures:
-            offspring = SearchingHerbivore(SCREEN_WIDTH, SCREEN_HEIGHT, creature.name)
+            for i in range(0, creature.num_offspring):
+                offspring = SearchingHerbivore(SCREEN_WIDTH, SCREEN_HEIGHT, creature.name)
+                all_sprites.add(offspring)
+                creatures.add(offspring)
             creature.kill()
-            all_sprites.add(offspring)
-            creatures.add(offspring)
 
         for i in range(0,basic_food_amount):
             food = BasicFood(SCREEN_WIDTH, SCREEN_HEIGHT)

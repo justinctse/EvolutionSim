@@ -48,6 +48,8 @@ class Creature(pygame.sprite.Sprite):
         self.acc_hor = acc_hor
         self.vel_vert = vel_vert
         self.vel_hor = vel_hor
+
+        self.num_offspring = 2
     
     # metric is speed
     # if we are over the max, then cap it at the max
