@@ -1,4 +1,5 @@
 import pygame 
+import random 
 class Creature(pygame.sprite.Sprite):
     def __init__(self, SCREEN_WIDTH, SCREEN_HEIGHT):
         super(Creature, self).__init__()
@@ -9,8 +10,10 @@ class Creature(pygame.sprite.Sprite):
         self.height = 25
         self.surf = pygame.Surface((self.width, self.height))
         self.surf.fill((0, 0, 0))
+        vertical_offset = random.randint(-1 * 50, 50)
+        horizontal_offset = random.randint(-1 * 50, 50)
         self.rect = self.surf.get_rect(
-                center=((SCREEN_WIDTH-self.surf.get_width())/2, (SCREEN_HEIGHT-self.surf.get_height())/2))
+                center=((SCREEN_WIDTH-self.surf.get_width())/2 + horizontal_offset, (SCREEN_HEIGHT-self.surf.get_height())/2 + vertical_offset))
 
         self.acc_increment = .33
         self.acc_max = 1.0

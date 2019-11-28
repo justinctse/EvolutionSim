@@ -2,6 +2,7 @@ import pygame
 import random
 import math
 import numpy as np
+from helper_functions.utility_functions import pause
 from classes.Creature import Creature 
 from classes.SearchingHerbivore import SearchingHerbivore
 from classes.BasicHerbivore import BasicHerbivore
@@ -11,10 +12,7 @@ from classes.Foods import BasicFood, SuperFood
 # Updated to conform to flake8 and black standards
 from pygame.locals import (
     RLEACCEL,
-    K_UP,
-    K_DOWN,
-    K_LEFT,
-    K_RIGHT,
+    K_SPACE,
     K_ESCAPE,
     KEYDOWN,
     QUIT,
@@ -62,11 +60,13 @@ for i in range(0, super_food_amount):
 running = True
 while running:
     for event in pygame.event.get():
-        if event.type == KEYDOWN:
+        if event.type == QUIT:
+            running = False
+        elif event.type == KEYDOWN:
             if event.key == K_ESCAPE:
                 running = False
-        elif event.type == QUIT:
-            running = False
+            if event.key == K_SPACE:
+                pause()
 
     # Fill the screen with white
     screen.fill((255, 255, 255))
