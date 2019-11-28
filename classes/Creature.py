@@ -1,5 +1,6 @@
 import pygame 
 import random 
+from helper_functions.class_functions import get_coordinates_from_angle
 class Creature(pygame.sprite.Sprite):
     def __init__(
         self, 
@@ -32,10 +33,12 @@ class Creature(pygame.sprite.Sprite):
         self.surf.fill(self.color)
         self.surf.set_alpha(self.alpha)
 
-        vertical_offset = random.randint(-1 * 50, 50)
-        horizontal_offset = random.randint(-1 * 50, 50)
+        # Spawn within 150 pixels of center
+        theta = random.randint(0,360)
+        distance_from_center = random.randint(0, 150)
+        x_offset, y_offset = get_coordinates_from_angle(theta, distance_from_center)
         self.rect = self.surf.get_rect(
-                center=((SCREEN_WIDTH-self.surf.get_width())/2 + horizontal_offset, (SCREEN_HEIGHT-self.surf.get_height())/2 + vertical_offset))
+                center=((SCREEN_WIDTH-self.surf.get_width())/2 + x_offset, (SCREEN_HEIGHT-self.surf.get_height())/2 + y_offset))
 
         self.jerk = jerk
         self.acc_max = acc_max

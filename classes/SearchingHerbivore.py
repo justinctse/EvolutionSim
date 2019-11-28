@@ -3,6 +3,7 @@ import math
 import numpy as np 
 import random
 from classes.Creature import Creature
+from helper_functions.class_functions import get_distance
 # This is a creature that can detect and track food
 class SearchingHerbivore(Creature):
     def __init__(
@@ -39,19 +40,13 @@ class SearchingHerbivore(Creature):
         self.type = 'searcher'
         self.search_distance = math.sqrt(math.pow(self.width, 2) + math.pow(self.height, 2)) * 10  # size of the diagonal * a multiplier
     
-    # Get distance to the set of coordinates
-    def get_distance(self, coordinates):
-        x, y = coordinates[0], coordinates[1]
-        self_x, self_y = self.rect[0], self.rect[1]
-        return math.sqrt(math.pow(x-self_x, 2) + math.pow(y-self_y, 2))
-    
     # Get the closest food given an iterable of foods
     def get_closest_food(self, foods):
         closest_point = None
         min_distance = 99999
         for food in foods:
             coordinates = (food.rect[0], food.rect[1])
-            distance = self.get_distance(coordinates)
+            distance = get_distance((self.rect[0], self.rect[1]), coordinates)
             if distance < min_distance:
                 closest_point = coordinates
                 min_distance = distance
@@ -68,7 +63,7 @@ class SearchingHerbivore(Creature):
             if self.width < self.hunger:
                 self.surf.fill((255,0,0))
                 self.surf.set_alpha(self.alpha)
-        elif self.get_distance(closest_point) < self.search_distance:
+        elif get_distance((self.rect[0], self.rect[1]), closest_point) < self.search_distance:
             # get right direction
             self.acc_vert = self.acc_vert + random.uniform(0, self.jerk) * np.sign(closest_point[1] - self.rect[1])
             self.acc_hor = self.acc_hor + random.uniform(0, self.jerk) * np.sign(closest_point[0] - self.rect[0])

@@ -27,7 +27,7 @@ frame_rate = 60
 basic_food_amount = 75
 super_food_amount = 25
 num_basic_herbivores = 0
-num_searching_herbivores = 20
+num_searching_herbivores = 200
 
 pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -54,7 +54,6 @@ for i in range(0,basic_food_amount):
     food = BasicFood(SCREEN_WIDTH, SCREEN_HEIGHT)
     all_sprites.add(food)
     foods.add(food) 
-
 for i in range(0, super_food_amount):
     food = SuperFood(SCREEN_WIDTH, SCREEN_HEIGHT)
     all_sprites.add(food)
@@ -64,10 +63,30 @@ round_counter = 0
 simulation_running = True
 
 while simulation_running:
+    print('debug1')
     round_counter += 1
     round_running = True
-    print('gothere start of new round')
-    print(round_counter)
+    
+    # Seed the new round
+    # TODO: seed with actual values from previous round
+    if round_counter > 1:
+        print('debug2')
+        for creature in creatures:
+            offspring = SearchingHerbivore(SCREEN_WIDTH, SCREEN_HEIGHT, creature.name)
+            creature.kill()
+            all_sprites.add(offspring)
+            creatures.add(offspring)
+
+        for i in range(0,basic_food_amount):
+            food = BasicFood(SCREEN_WIDTH, SCREEN_HEIGHT)
+            all_sprites.add(food)
+            foods.add(food) 
+        for i in range(0, super_food_amount):
+            food = SuperFood(SCREEN_WIDTH, SCREEN_HEIGHT)
+            all_sprites.add(food)
+            foods.add(food)
+    print('debug3')
+
     while round_running:
         # This if statement makes sure that we can exit on quit command
         if not simulation_running: 
@@ -110,8 +129,11 @@ while simulation_running:
 
         # Round ends if there is no time left
         if len(foods) == 0:
-            round_running = False
+            # redraw (so the red shows up)
+            for entity in all_sprites:
+                screen.blit(entity.surf, entity.rect)
             simulation_running, round_running = pause_time(2)
+            round_running = False
             for entity in creatures:
                 if entity.width < entity.hunger:
                     entity.kill()
