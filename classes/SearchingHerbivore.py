@@ -11,6 +11,7 @@ class SearchingHerbivore(Creature):
         SCREEN_WIDTH,
         SCREEN_HEIGHT,
         name,
+        color = (0,0,0),
         max_size=100,
         width=25,
         height=25,
@@ -20,13 +21,15 @@ class SearchingHerbivore(Creature):
         acc_vert=0,
         acc_hor=0,
         vel_vert=0,
-        vel_hor=0
+        vel_hor=0,
+        search_distance_multiplier = 10
     ):
         Creature.__init__(
             self, 
             SCREEN_WIDTH, 
             SCREEN_HEIGHT,
             name,
+            color=color,
             max_size=max_size,
             width=width,
             height=height,
@@ -38,7 +41,8 @@ class SearchingHerbivore(Creature):
             vel_vert=vel_vert,
             vel_hor=vel_hor)
         self.type = 'searcher'
-        self.search_distance = math.sqrt(math.pow(self.width, 2) + math.pow(self.height, 2)) * 10  # size of the diagonal * a multiplier
+        self.search_distance_multiplier = search_distance_multiplier
+        self.search_distance = math.sqrt(math.pow(self.width, 2) + math.pow(self.height, 2)) * self.search_distance_multiplier  # size of the diagonal * a multiplier
     
     # Get the closest food given an iterable of foods
     def get_closest_food(self, foods):
@@ -101,3 +105,21 @@ class SearchingHerbivore(Creature):
             self.rect.bottom = self.SCREEN_HEIGHT
             self.acc_vert = self.acc_vert * -1
             self.vel_vert = -1
+
+    # Overriding the original function, I need to do this so that
+    # search distance is updated
+    def grow(self, growth_increment = 5):
+        if (self.width < self.max_size) & (self.height < self.max_size):
+            # Grow the sprite
+            self.width = min(self.width + growth_increment, self.max_size)
+            self.height = min(self.height + growth_increment, self.max_size)
+            self.surf = pygame.Surface((self.width, self.height))
+            self.surf.fill(self.color)
+            self.surf.set_alpha(self.alpha)
+            # I'm not gonna lie this code is questionable
+            self.rect = self.surf.get_rect(
+                center=(self.rect[0] + self.width/2, self.rect[1] + self.height/2))
+            
+            # Update parameters
+            self.search_distance = math.sqrt(math.pow(self.width, 2) + math.pow(self.height, 2)) * self.search_distance_multiplier
+            # Update max acc and vert???

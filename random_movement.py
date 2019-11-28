@@ -26,8 +26,8 @@ SCREEN_WIDTH, SCREEN_HEIGHT = 1200, 800
 frame_rate = 60
 basic_food_amount = 75
 super_food_amount = 25
-num_basic_herbivores = 0
-num_searching_herbivores = 20
+num_basic_searching_herbivores = 10
+num_fast_searching_herbivores = 10
 
 bg = pygame.image.load("assets/background.png")
 
@@ -41,14 +41,44 @@ all_sprites = pygame.sprite.Group()
 creatures = pygame.sprite.Group()
 foods = pygame.sprite.Group()
 
+# Layout base values for Creature parameters
+base_max_size = 100
+base_size = 15
+base_jerk = .02
+base_acc_max = .25
+base_vel_max = 2.5
+base_search_distance_multiplier = 10
+
 # Create objects 
-for i in range(0, num_basic_herbivores):
-    creature = BasicHerbivore(SCREEN_WIDTH, SCREEN_HEIGHT)
+for i in range(0, num_basic_searching_herbivores):
+    creature = SearchingHerbivore(
+        SCREEN_WIDTH, 
+        SCREEN_HEIGHT, 
+        "searching_herbivore_" + str(i),
+        max_size=base_max_size,
+        width=base_size,
+        height=base_size,
+        jerk=base_jerk,
+        acc_max=base_acc_max,
+        vel_max=base_vel_max,
+        search_distance_multiplier=base_search_distance_multiplier
+    )
     all_sprites.add(creature)
     creatures.add(creature)
-
-for i in range(0, num_searching_herbivores):
-    creature = SearchingHerbivore(SCREEN_WIDTH, SCREEN_HEIGHT, "searching_herbivore_" + str(i))
+for i in range(0, num_fast_searching_herbivores):
+    creature = SearchingHerbivore(
+        SCREEN_WIDTH, 
+        SCREEN_HEIGHT, 
+        "searching_herbivore_" + str(i),
+        color = (0,0,255),
+        max_size=base_max_size,
+        width=base_size,
+        height=base_size,
+        jerk=base_jerk * 1.5,
+        acc_max=base_acc_max * 1.5,
+        vel_max=base_vel_max * 1.5,
+        search_distance_multiplier=base_search_distance_multiplier
+    )
     all_sprites.add(creature)
     creatures.add(creature)
 
@@ -75,7 +105,19 @@ while simulation_running:
         print('debug2')
         for creature in creatures:
             for i in range(0, creature.num_offspring):
-                offspring = SearchingHerbivore(SCREEN_WIDTH, SCREEN_HEIGHT, creature.name)
+                offspring = SearchingHerbivore(
+                    SCREEN_WIDTH, 
+                    SCREEN_HEIGHT, 
+                    creature.name,
+                    color=creature.color,
+                    max_size=creature.max_size,
+                    width=creature.birth_width,
+                    height=creature.birth_height,
+                    jerk=creature.jerk,
+                    acc_max=creature.acc_max,
+                    vel_max=creature.vel_max,
+                    search_distance_multiplier=creature.search_distance_multiplier
+                )
                 all_sprites.add(offspring)
                 creatures.add(offspring)
             creature.kill()

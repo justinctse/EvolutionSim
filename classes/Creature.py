@@ -7,6 +7,7 @@ class Creature(pygame.sprite.Sprite):
         SCREEN_WIDTH, 
         SCREEN_HEIGHT,
         name,
+        color = (0,0,0),
         max_size=100,
         width=15,
         height=15,
@@ -23,12 +24,14 @@ class Creature(pygame.sprite.Sprite):
         self.SCREEN_WIDTH = SCREEN_WIDTH 
         self.SCREEN_HEIGHT = SCREEN_HEIGHT
         self.max_size = max_size
+        self.birth_width = width
+        self.birth_height = height
         self.width = width
         self.height = height
         self.hunger = int(self.max_size/3)
 
         self.surf = pygame.Surface((self.width, self.height))
-        self.color = (0,0,0)
+        self.color = color
         self.alpha = 200
         self.surf.fill(self.color)
         self.surf.set_alpha(self.alpha)
