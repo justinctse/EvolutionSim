@@ -46,6 +46,8 @@ class SearchingHerbivore(Creature):
     
     # Get the closest food given an iterable of foods
     def get_closest_food(self, foods):
+        if len(foods) == 0:
+            return None
         closest_point = None
         min_distance = 99999
         for food in foods:
@@ -55,6 +57,8 @@ class SearchingHerbivore(Creature):
                 closest_point = coordinates
                 min_distance = distance
         return closest_point
+
+    # TODO: Create a better death function
 
     def update_position(self, foods):
         closest_point = self.get_closest_food(foods)

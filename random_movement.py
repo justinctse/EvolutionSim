@@ -26,8 +26,8 @@ SCREEN_WIDTH, SCREEN_HEIGHT = 1200, 800
 frame_rate = 60
 basic_food_amount = 75
 super_food_amount = 25
-num_basic_searching_herbivores = 10
-num_fast_searching_herbivores = 10
+num_basic_searching_herbivores = 20
+num_fast_searching_herbivores = 5
 
 bg = pygame.image.load("assets/background.png")
 
@@ -100,7 +100,6 @@ while simulation_running:
     round_running = True
     
     # Seed the new round
-    # TODO: seed with actual values from previous round
     if round_counter > 1:
         print('debug2')
         for creature in creatures:
@@ -175,11 +174,13 @@ while simulation_running:
 
         # Round ends if there is no time left
         if len(foods) == 0:
-            # redraw (so the red shows up)
-            for entity in all_sprites:
-                screen.blit(entity.surf, entity.rect)
-            simulation_running, round_running = pause_time(2)
-            round_running = False
+            # Dispose of creatures that did not eat enough
             for entity in creatures:
+                # Make sure that death stuff is activated (color red)
+                if entity.type == 'searcher':
+                    entity.update_position(foods)
+                screen.blit(entity.surf, entity.rect)
                 if entity.width < entity.hunger:
                     entity.kill()
+            simulation_running, round_running = pause_time(2)
+            round_running = False
