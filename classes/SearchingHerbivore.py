@@ -62,6 +62,10 @@ class SearchingHerbivore(Creature):
             self.acc_hor = 0
             self.vel_vert = 0
             self.vel_hor = 0
+            # If they didn't eat enough, color red
+            if self.width < self.hunger:
+                self.surf.fill((255,0,0))
+                self.surf.set_alpha(self.alpha)
         elif self.get_distance(closest_point) < self.search_distance:
             # get right direction
             self.acc_vert = self.acc_vert + random.uniform(0, self.jerk) * np.sign(closest_point[1] - self.rect[1])

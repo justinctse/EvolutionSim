@@ -6,8 +6,8 @@ class Creature(pygame.sprite.Sprite):
         SCREEN_WIDTH, 
         SCREEN_HEIGHT,
         max_size=100,
-        width=25,
-        height=25,
+        width=15,
+        height=15,
         jerk=.05,
         acc_max=.25,
         vel_max=2.5,
@@ -22,11 +22,14 @@ class Creature(pygame.sprite.Sprite):
         self.max_size = max_size
         self.width = width
         self.height = height
+        self.hunger = int(self.max_size/3)
+
         self.surf = pygame.Surface((self.width, self.height))
         self.color = (0,0,0)
         self.alpha = 200
         self.surf.fill(self.color)
         self.surf.set_alpha(self.alpha)
+
         vertical_offset = random.randint(-1 * 50, 50)
         horizontal_offset = random.randint(-1 * 50, 50)
         self.rect = self.surf.get_rect(

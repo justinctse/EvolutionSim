@@ -27,7 +27,7 @@ frame_rate = 60
 basic_food_amount = 75
 super_food_amount = 25
 num_basic_herbivores = 0
-num_searching_herbivores = 10
+num_searching_herbivores = 20
 
 pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -66,9 +66,11 @@ simulation_running = True
 while simulation_running:
     round_counter += 1
     round_running = True
-
+    print('gothere start of new round')
+    print(round_counter)
     while round_running:
-        if ~(simulation_running):
+        # This if statement makes sure that we can exit on quit command
+        if not simulation_running:
             round_running = False
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -105,3 +107,7 @@ while simulation_running:
 
         # Flip everything to the display
         pygame.display.flip()
+
+        if len(foods) == 0:
+            print('gothere')
+            round_running = False
