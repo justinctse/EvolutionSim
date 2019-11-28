@@ -16,19 +16,20 @@ class SearchingHerbivore(Creature):
         self_x, self_y = self.rect[0], self.rect[1]
         return math.sqrt(math.pow(x-self_x, 2) + math.pow(y-self_y, 2))
     
-    # Get the closest set of coordinates
-    def get_closest_food(self, all_coordinates):
+    # Get the closest food given an iterable of foods
+    def get_closest_food(self, foods):
         closest_point = None
         min_distance = 99999
-        for coordinates in all_coordinates:
+        for food in foods:
+            coordinates = (food.rect[0], food.rect[1])
             distance = self.get_distance(coordinates)
             if distance < min_distance:
                 closest_point = coordinates
                 min_distance = distance
         return closest_point
 
-    def update_position(self, all_coordinates):
-        closest_point = self.get_closest_food(all_coordinates)
+    def update_position(self, foods):
+        closest_point = self.get_closest_food(foods)
         if closest_point is None:
             self.acc_vert = 0
             self.acc_hor = 0

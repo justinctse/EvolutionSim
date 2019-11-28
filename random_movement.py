@@ -77,9 +77,9 @@ while running:
     screen.fill((255, 255, 255))
     
     # Get coordinates of food so that Creatures can track
-    food_coordinates = []
-    for food in foods:
-        food_coordinates.append((food.rect[0], food.rect[1]))
+    # food_coordinates = []
+    # for food in foods:
+    #     food_coordinates.append((food.rect[0], food.rect[1]))
 
     for entity in creatures:
         # Check for collisions
@@ -91,7 +91,7 @@ while running:
         if entity.type == 'basic':
             entity.update_position()
         if entity.type == 'searcher':
-            entity.update_position(food_coordinates)
+            entity.update_position(foods)
 
     # Draw all our sprites
     for entity in all_sprites:
