@@ -4,6 +4,8 @@ from pygame.locals import (
     RLEACCEL,
     K_SPACE,
     K_ESCAPE,
+    K_LEFT,
+    K_RIGHT,
     KEYDOWN,
     QUIT,
 )
@@ -29,3 +31,10 @@ def pause(SCREEN_WIDTH, SCREEN_HEIGHT, screen):
                     # unpause
                     paused = False
     return running
+
+def adjust_frame_rate(frame_rate, key):
+    if key == K_LEFT:
+        to_return = frame_rate - 5
+    elif key == K_RIGHT:
+        to_return = frame_rate + 5
+    return max(1, to_return)

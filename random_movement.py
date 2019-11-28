@@ -2,7 +2,8 @@ import pygame
 import random
 import math
 import numpy as np
-from helper_functions.utility_functions import pause
+import time
+from helper_functions.utility_functions import pause, adjust_frame_rate
 from classes.Creature import Creature 
 from classes.SearchingHerbivore import SearchingHerbivore
 from classes.BasicHerbivore import BasicHerbivore
@@ -14,6 +15,8 @@ from pygame.locals import (
     RLEACCEL,
     K_SPACE,
     K_ESCAPE,
+    K_LEFT,
+    K_RIGHT,
     KEYDOWN,
     QUIT,
 )
@@ -65,8 +68,11 @@ while running:
         elif event.type == KEYDOWN:
             if event.key == K_ESCAPE:
                 running = False
-            if event.key == K_SPACE:
+            elif event.key == K_SPACE:
                 running = pause(SCREEN_WIDTH, SCREEN_HEIGHT, screen)
+            elif (event.key == K_LEFT) or (event.key == K_RIGHT):
+                frame_rate = adjust_frame_rate(frame_rate, event.key)
+    print(frame_rate)
 
     # Fill the screen with white
     screen.fill((255, 255, 255))
