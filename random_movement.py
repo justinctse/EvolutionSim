@@ -27,7 +27,7 @@ frame_rate = 60
 basic_food_amount = 75
 super_food_amount = 25
 num_basic_herbivores = 0
-num_searching_herbivores = 1
+num_searching_herbivores = 10
 
 pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -60,40 +60,48 @@ for i in range(0, super_food_amount):
     all_sprites.add(food)
     foods.add(food)
 
-running = True
-while running:
-    for event in pygame.event.get():
-        if event.type == QUIT:
-            running = False
-        elif event.type == KEYDOWN:
-            if event.key == K_ESCAPE:
-                running = False
-            elif event.key == K_SPACE:
-                running = pause(SCREEN_WIDTH, SCREEN_HEIGHT, screen)
-            elif (event.key == K_LEFT) or (event.key == K_RIGHT):
-                frame_rate = adjust_frame_rate(frame_rate, event.key)
+round_counter = 0
+simulation_running = True
 
-    # Fill the screen with white
-    screen.fill((255, 255, 255))
+while simulation_running:
+    round_counter += 1
+    round_running = True
 
-    for entity in creatures:
-        # Check for collisions
-        collider = pygame.sprite.spritecollideany(entity, foods)
-        if collider:
-            entity.grow(collider.value)
-            collider.kill()
-        # Move sprites
-        if entity.type == 'basic':
-            entity.update_position()
-        if entity.type == 'searcher':
-            entity.update_position(foods)
+    while round_running:
+        if ~(simulation_running):
+            round_running = False
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                simulation_running = False
+            elif event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                    simulation_running = False
+                elif event.key == K_SPACE:
+                    simulation_running, round_running = pause(SCREEN_WIDTH, SCREEN_HEIGHT, screen)
+                elif (event.key == K_LEFT) or (event.key == K_RIGHT):
+                    frame_rate = adjust_frame_rate(frame_rate, event.key)
 
-    # Draw all our sprites
-    for entity in all_sprites:
-        screen.blit(entity.surf, entity.rect)
+        # Fill the screen with white
+        screen.fill((255, 255, 255))
 
-    # Ensure program maintains a constant frame rate
-    clock.tick(frame_rate)
+        for entity in creatures:
+            # Check for collisions
+            collider = pygame.sprite.spritecollideany(entity, foods)
+            if collider:
+                entity.grow(collider.value)
+                collider.kill()
+            # Move sprites
+            if entity.type == 'basic':
+                entity.update_position()
+            if entity.type == 'searcher':
+                entity.update_position(foods)
 
-    # Flip everything to the display
-    pygame.display.flip()
+        # Draw all our sprites
+        for entity in all_sprites:
+            screen.blit(entity.surf, entity.rect)
+
+        # Ensure program maintains a constant frame rate
+        clock.tick(frame_rate)
+
+        # Flip everything to the display
+        pygame.display.flip()

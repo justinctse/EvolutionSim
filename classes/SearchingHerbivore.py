@@ -12,9 +12,9 @@ class SearchingHerbivore(Creature):
         max_size=100,
         width=25,
         height=25,
-        acc_increment=.33,
-        acc_max=1.0,
-        vel_max=5.0,
+        jerk=.05,
+        acc_max=.25,
+        vel_max=2.5,
         acc_vert=0,
         acc_hor=0,
         vel_vert=0,
@@ -27,7 +27,7 @@ class SearchingHerbivore(Creature):
             max_size=max_size,
             width=width,
             height=height,
-            acc_increment=acc_increment,
+            jerk=jerk,
             acc_max=acc_max,
             vel_max=vel_max,
             acc_vert=acc_vert,
@@ -35,7 +35,7 @@ class SearchingHerbivore(Creature):
             vel_vert=vel_vert,
             vel_hor=vel_hor)
         self.type = 'searcher'
-        self.search_distance = math.sqrt(math.pow(self.width, 2) + math.pow(self.height, 2)) * 10  # size of the diagona * a multiplier
+        self.search_distance = math.sqrt(math.pow(self.width, 2) + math.pow(self.height, 2)) * 10  # size of the diagonal * a multiplier
     
     # Get distance to the set of coordinates
     def get_distance(self, coordinates):
@@ -64,22 +64,22 @@ class SearchingHerbivore(Creature):
             self.vel_hor = 0
         elif self.get_distance(closest_point) < self.search_distance:
             # get right direction
-            self.acc_vert = self.acc_vert + random.uniform(0, self.acc_increment) * np.sign(closest_point[1] - self.rect[1])
-            self.acc_hor = self.acc_hor + random.uniform(0, self.acc_increment) * np.sign(closest_point[0] - self.rect[0])
+            self.acc_vert = self.acc_vert + random.uniform(0, self.jerk) * np.sign(closest_point[1] - self.rect[1])
+            self.acc_hor = self.acc_hor + random.uniform(0, self.jerk) * np.sign(closest_point[0] - self.rect[0])
             self.vel_vert = self.vel_vert + self.acc_vert
             self.vel_hor = self.vel_hor + self.acc_hor
         else:
             # random movement
-            self.acc_vert = self.acc_vert + random.uniform(-1 * self.acc_increment, self.acc_increment)
-            self.acc_hor = self.acc_hor + random.uniform(-1 * self.acc_increment, self.acc_increment)
+            self.acc_vert = self.acc_vert + random.uniform(-1 * self.jerk, self.jerk)
+            self.acc_hor = self.acc_hor + random.uniform(-1 * self.jerk, self.jerk)
             self.vel_vert = self.vel_vert + self.acc_vert
             self.vel_hor = self.vel_hor + self.acc_hor
 
         # handling max acceleration or velocity
         self.vel_vert = self.handle_max_speed(self.vel_vert, self.vel_max, abs(self.acc_vert))
         self.vel_hor = self.handle_max_speed(self.vel_hor, self.vel_max, abs(self.acc_hor))
-        self.acc_vert = self.handle_max_speed(self.acc_vert, self.acc_max, abs(self.acc_increment))
-        self.acc_hor = self.handle_max_speed(self.acc_hor, self.acc_max, abs(self.acc_increment))
+        self.acc_vert = self.handle_max_speed(self.acc_vert, self.acc_max, abs(self.jerk))
+        self.acc_hor = self.handle_max_speed(self.acc_hor, self.acc_max, abs(self.jerk))
 
         # hor, vert
         self.rect.move_ip(int(self.vel_hor), int(self.vel_vert))

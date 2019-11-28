@@ -22,15 +22,19 @@ def pause(SCREEN_WIDTH, SCREEN_HEIGHT, screen):
         for event in pygame.event.get():
             if event.type == QUIT:
                 paused = False
-                running = False
+                simulation_running = False
+                round_running = False
             if event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
                     paused = False
-                    running = False
+                    simulation_running = False
+                    round_running = False
                 if event.key == K_SPACE:
                     # unpause
                     paused = False
-    return running
+                    simulation_running = True
+                    round_running = True
+    return simulation_running, round_running
 
 def adjust_frame_rate(frame_rate, key):
     # move this to main game
