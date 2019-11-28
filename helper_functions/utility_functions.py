@@ -33,8 +33,11 @@ def pause(SCREEN_WIDTH, SCREEN_HEIGHT, screen):
     return running
 
 def adjust_frame_rate(frame_rate, key):
+    # move this to main game
+    GAME_FONT = pygame.freetype.SysFont("Times New Roman", 72)
     if key == K_LEFT:
         to_return = frame_rate - 5
     elif key == K_RIGHT:
         to_return = frame_rate + 5
+    print("Framerate: " + str(to_return))
     return max(1, to_return)

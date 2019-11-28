@@ -8,6 +8,7 @@ class SearchingHerbivore(Creature):
     def __init__(self, SCREEN_WIDTH, SCREEN_HEIGHT):
         Creature.__init__(self, SCREEN_WIDTH, SCREEN_HEIGHT)
         self.type = 'searcher'
+        self.search_distance = math.sqrt(math.pow(self.width, 2) + math.pow(self.height, 2)) * 10  # size of the diagona * a multiplier
     
     # Get distance to the set of coordinates
     def get_distance(self, coordinates):
@@ -33,10 +34,16 @@ class SearchingHerbivore(Creature):
             self.acc_hor = 0
             self.vel_vert = 0
             self.vel_hor = 0
-        else:
+        elif self.get_distance(closest_point) < self.search_distance:
             # get right direction
             self.acc_vert = self.acc_vert + random.uniform(0, self.acc_increment) * np.sign(closest_point[1] - self.rect[1])
             self.acc_hor = self.acc_hor + random.uniform(0, self.acc_increment) * np.sign(closest_point[0] - self.rect[0])
+            self.vel_vert = self.vel_vert + self.acc_vert
+            self.vel_hor = self.vel_hor + self.acc_hor
+        else:
+            # random movement
+            self.acc_vert = self.acc_vert + random.uniform(-1 * self.acc_increment, self.acc_increment)
+            self.acc_hor = self.acc_hor + random.uniform(-1 * self.acc_increment, self.acc_increment)
             self.vel_vert = self.vel_vert + self.acc_vert
             self.vel_hor = self.vel_hor + self.acc_hor
 

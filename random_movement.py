@@ -26,8 +26,8 @@ SCREEN_WIDTH, SCREEN_HEIGHT = 1200, 800
 frame_rate = 60
 basic_food_amount = 75
 super_food_amount = 25
-num_basic_herbivores = 1
-num_searching_herbivores = 5
+num_basic_herbivores = 0
+num_searching_herbivores = 1
 
 pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -72,7 +72,6 @@ while running:
                 running = pause(SCREEN_WIDTH, SCREEN_HEIGHT, screen)
             elif (event.key == K_LEFT) or (event.key == K_RIGHT):
                 frame_rate = adjust_frame_rate(frame_rate, event.key)
-    print(frame_rate)
 
     # Fill the screen with white
     screen.fill((255, 255, 255))
