@@ -1,5 +1,6 @@
 import pygame 
 import pygame.freetype
+import time
 from pygame.locals import (
     RLEACCEL,
     K_SPACE,
@@ -9,6 +10,7 @@ from pygame.locals import (
     KEYDOWN,
     QUIT,
 )
+# Pause game until input recieved
 def pause(SCREEN_WIDTH, SCREEN_HEIGHT, screen):
     GAME_FONT = pygame.freetype.SysFont("Times New Roman", 72)
     # You can use `render` and then blit the text surface ...
@@ -34,6 +36,29 @@ def pause(SCREEN_WIDTH, SCREEN_HEIGHT, screen):
                     paused = False
                     simulation_running = True
                     round_running = True
+    return simulation_running, round_running
+
+# pause game for a specified amount of seconds
+def pause_time(seconds):
+    start_time = time.time()
+    simulation_running = True
+    round_running = True
+    paused = True
+    while paused:
+        if time.time() - start_time > seconds:
+            break
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                simulation_running = False
+                round_running = False
+                paused = False
+                break
+            if event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                    simulation_running = False
+                    round_running = False
+                    paused = False
+                    break
     return simulation_running, round_running
 
 def adjust_frame_rate(frame_rate, key):

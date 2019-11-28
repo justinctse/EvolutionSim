@@ -3,7 +3,7 @@ import random
 import math
 import numpy as np
 import time
-from helper_functions.utility_functions import pause, adjust_frame_rate
+from helper_functions.utility_functions import pause, pause_time, adjust_frame_rate
 from classes.Creature import Creature 
 from classes.SearchingHerbivore import SearchingHerbivore
 from classes.BasicHerbivore import BasicHerbivore
@@ -46,7 +46,7 @@ for i in range(0, num_basic_herbivores):
     creatures.add(creature)
 
 for i in range(0, num_searching_herbivores):
-    creature = SearchingHerbivore(SCREEN_WIDTH, SCREEN_HEIGHT)
+    creature = SearchingHerbivore(SCREEN_WIDTH, SCREEN_HEIGHT, "searching_herbivore_" + str(i))
     all_sprites.add(creature)
     creatures.add(creature)
 
@@ -70,7 +70,7 @@ while simulation_running:
     print(round_counter)
     while round_running:
         # This if statement makes sure that we can exit on quit command
-        if not simulation_running:
+        if not simulation_running: 
             round_running = False
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -108,6 +108,10 @@ while simulation_running:
         # Flip everything to the display
         pygame.display.flip()
 
+        # Round ends if there is no time left
         if len(foods) == 0:
-            print('gothere')
             round_running = False
+            simulation_running, round_running = pause_time(2)
+            for entity in creatures:
+                if entity.width < entity.hunger:
+                    entity.kill()

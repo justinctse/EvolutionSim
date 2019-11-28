@@ -5,10 +5,11 @@ class Creature(pygame.sprite.Sprite):
         self, 
         SCREEN_WIDTH, 
         SCREEN_HEIGHT,
+        name,
         max_size=100,
         width=15,
         height=15,
-        jerk=.05,
+        jerk=.02,
         acc_max=.25,
         vel_max=2.5,
         acc_vert=0,
@@ -17,6 +18,7 @@ class Creature(pygame.sprite.Sprite):
         vel_hor=0
     ):
         super(Creature, self).__init__()
+        self.name = name
         self.SCREEN_WIDTH = SCREEN_WIDTH 
         self.SCREEN_HEIGHT = SCREEN_HEIGHT
         self.max_size = max_size
