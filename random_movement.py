@@ -27,7 +27,9 @@ frame_rate = 60
 basic_food_amount = 75
 super_food_amount = 25
 num_basic_herbivores = 0
-num_searching_herbivores = 1
+num_searching_herbivores = 20
+
+bg = pygame.image.load("assets/background.png")
 
 pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -104,7 +106,8 @@ while simulation_running:
                     frame_rate = adjust_frame_rate(frame_rate, event.key)
 
         # Fill the screen with white
-        screen.fill((255, 255, 255))
+        #screen.fill((255, 255, 255))
+        screen.blit(bg, (0, 0))
 
         for entity in creatures:
             # Check for collisions
