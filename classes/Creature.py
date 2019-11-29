@@ -83,3 +83,6 @@ class Creature(pygame.sprite.Sprite):
         if self.width < self.hunger:
             self.surf.fill((255,0,0))
             self.surf.set_alpha(self.alpha)
+
+    def get_attributes(self):
+        return vars(self)

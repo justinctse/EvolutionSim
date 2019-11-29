@@ -160,6 +160,7 @@ while simulation_running:
         screen.blit(bg, (0, 0))
 
         for entity in creatures:
+            print(creature.get_attributes())
             # Check for collisions
             collider = pygame.sprite.spritecollideany(entity, foods)
             if collider:
