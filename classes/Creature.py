@@ -18,7 +18,7 @@ class Creature(pygame.sprite.Sprite):
         acc_hor=0,
         vel_vert=0,
         vel_hor=0,
-        num_offspring_divisor=20 # Default that every 20 in size results in 1 offspring
+        num_offspring_divisor=15 # Default that every x in size results in 1 offspring
     ):
         super(Creature, self).__init__()
         self.name = name
@@ -77,3 +77,9 @@ class Creature(pygame.sprite.Sprite):
             # I'm not gonna lie this code is questionable
             self.rect = self.surf.get_rect(
                 center=(self.rect[0] + self.width/2, self.rect[1] + self.height/2))
+    
+    def end_of_round_logic(self):
+        # If they didn't eat enough, color red
+        if self.width < self.hunger:
+            self.surf.fill((255,0,0))
+            self.surf.set_alpha(self.alpha)
