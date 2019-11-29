@@ -3,6 +3,8 @@ import random
 import math
 import numpy as np
 import time
+import pandas as pd
+from config import *
 from helper_functions.utility_functions import pause, pause_time, adjust_frame_rate
 from classes.Creature import Creature 
 from classes.SearchingHerbivore import SearchingHerbivore
@@ -23,14 +25,6 @@ from pygame.locals import (
     KEYDOWN,
     QUIT,
 )
-
-# Define constants
-SCREEN_WIDTH, SCREEN_HEIGHT = 1200, 800
-frame_rate = 60
-basic_food_amount = 75
-super_food_amount = 25
-num_basic_searching_herbivores = 10
-num_fast_searching_herbivores = 0
 
 bg = pygame.image.load("assets/background.png")
 
@@ -57,8 +51,6 @@ base_num_offspring_divisor = 20
 for i in range(0, num_basic_searching_herbivores):
     size = int(base_size*random.uniform(.8,1.2))
     creature = SearchingHerbivore(
-        SCREEN_WIDTH, 
-        SCREEN_HEIGHT, 
         "searching_herbivore_" + str(i),
         max_size=int(base_max_size*random.uniform(.8,1.2)),
         width=size,
@@ -71,30 +63,29 @@ for i in range(0, num_basic_searching_herbivores):
     )
     all_sprites.add(creature)
     creatures.add(creature)
-for i in range(0, num_fast_searching_herbivores):
-    creature = SearchingHerbivore(
-        SCREEN_WIDTH, 
-        SCREEN_HEIGHT, 
-        "searching_herbivore_" + str(i),
-        color = (0,0,255),
-        max_size=base_max_size,
-        width=base_size,
-        height=base_size,
-        jerk=base_jerk * 1.5,
-        acc_max=base_acc_max * 1.5,
-        vel_max=base_vel_max * 1.5,
-        num_offspring_divisor=base_num_offspring_divisor*random.uniform(.8,1.2),
-        search_distance_multiplier=base_search_distance_multiplier
-    )
-    all_sprites.add(creature)
-    creatures.add(creature)
+# for i in range(0, num_fast_searching_herbivores):
+#     creature = SearchingHerbivore(
+#         "searching_herbivore_" + str(i),
+#         color = (0,0,255),
+#         max_size=base_max_size,
+#         width=base_size,
+#         height=base_size,
+#         jerk=base_jerk * 1.5,
+#         acc_max=base_acc_max * 1.5,
+#         vel_max=base_vel_max * 1.5,
+#         num_offspring_divisor=base_num_offspring_divisor*random.uniform(.8,1.2),
+#         search_distance_multiplier=base_search_distance_multiplier
+#     )
+#     all_sprites.add(creature)
+#     creatures.add(creature)
 
+# TODO: Move randomness out of food and into the constructor
 for i in range(0,basic_food_amount):
-    food = BasicFood(SCREEN_WIDTH, SCREEN_HEIGHT)
+    food = BasicFood()
     all_sprites.add(food)
     foods.add(food) 
 for i in range(0, super_food_amount):
-    food = SuperFood(SCREEN_WIDTH, SCREEN_HEIGHT)
+    food = SuperFood()
     all_sprites.add(food)
     foods.add(food)
 
@@ -111,8 +102,6 @@ while simulation_running:
             for i in range(0, max(1,int(creature.width/creature.num_offspring_divisor))):
                 size = int(creature.birth_width * random.uniform(.8,1.2))
                 offspring = SearchingHerbivore(
-                    SCREEN_WIDTH, 
-                    SCREEN_HEIGHT, 
                     creature.name,
                     color=creature.color,
                     max_size=int(creature.max_size * random.uniform(.8,1.2)),
@@ -128,11 +117,11 @@ while simulation_running:
             creature.kill()
 
         for i in range(0,basic_food_amount):
-            food = BasicFood(SCREEN_WIDTH, SCREEN_HEIGHT)
+            food = BasicFood()
             all_sprites.add(food)
             foods.add(food) 
         for i in range(0, super_food_amount):
-            food = SuperFood(SCREEN_WIDTH, SCREEN_HEIGHT)
+            food = SuperFood()
             all_sprites.add(food)
             foods.add(food)
 
@@ -148,11 +137,10 @@ while simulation_running:
                 if event.key == K_ESCAPE:
                     simulation_running = False
                 elif event.key == K_SPACE:
-                    simulation_running, round_running = pause(SCREEN_WIDTH, SCREEN_HEIGHT, screen)
+                    simulation_running, round_running = pause(screen)
                 elif (event.key == K_LEFT) or (event.key == K_RIGHT):
                     frame_rate = adjust_frame_rate(frame_rate, event.key)
 
-        
         # The background is the first thing that needs to be rendered
         # I want this after the Pause so the paused text shows on top
         # Fill the screen with white
@@ -160,7 +148,6 @@ while simulation_running:
         screen.blit(bg, (0, 0))
 
         for entity in creatures:
-            print(creature.get_attributes())
             # Check for collisions
             collider = pygame.sprite.spritecollideany(entity, foods)
             if collider:
@@ -179,12 +166,23 @@ while simulation_running:
         # Round ends if there is no time left
         if len(foods) == 0:
             # Dispose of creatures that did not eat enough
+            out = []
+            skip_fields = ['_Sprite__g', 'surf', 'rect', ]
             for entity in creatures:
-                # Make sure that death stuff is activated (color red)
+                attributes = entity.get_attributes()
+                for key in skip_fields:
+                    attributes.pop(key, None)
+                
+                out.append(attributes)
+
+                # Make sure t''hat death stuff is activated (color red)
                 entity.end_of_round_logic()
                 screen.blit(entity.surf, entity.rect)
                 if entity.width < entity.hunger:
                     entity.kill()
+
+            print(pd.DataFrame(out).name)
+            print(pd.DataFrame(out))
             pygame.display.flip()
             simulation_running, round_running = pause_time(2)
             round_running = False

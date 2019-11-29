@@ -1,6 +1,7 @@
 import pygame 
 import pygame.freetype
 import time
+from config import *
 from pygame.locals import (
     RLEACCEL,
     K_SPACE,
@@ -11,7 +12,7 @@ from pygame.locals import (
     QUIT,
 )
 # Pause game until input recieved
-def pause(SCREEN_WIDTH, SCREEN_HEIGHT, screen):
+def pause(screen):
     pause_font = pygame.freetype.SysFont("Times New Roman", 72)
     # You can use `render` and then blit the text surface ...
     text_surface, rect = pause_font.render("Paused", (0,0,0))

@@ -1,8 +1,9 @@
 import pygame 
 import random 
+from config import *
 from helper_functions.class_functions import get_distance
 class BasicFood(pygame.sprite.Sprite):
-    def __init__(self, SCREEN_WIDTH, SCREEN_HEIGHT):
+    def __init__(self):
         super(BasicFood, self).__init__()
         self.type = 'basic'
         self.size = random.randint(3,8)
@@ -23,7 +24,7 @@ class BasicFood(pygame.sprite.Sprite):
         self.surf.fill((255,116,136))
                 
 class SuperFood(pygame.sprite.Sprite):
-    def __init__(self, SCREEN_WIDTH, SCREEN_HEIGHT):
+    def __init__(self):
         super(SuperFood, self).__init__()
         self.type = 'super'
         self.size = random.randint(4,10)

@@ -1,11 +1,10 @@
 import pygame 
 import random 
+from config import *
 from helper_functions.class_functions import get_coordinates_from_angle
 class Creature(pygame.sprite.Sprite):
     def __init__(
-        self, 
-        SCREEN_WIDTH, 
-        SCREEN_HEIGHT,
+        self,
         name,
         color = (0,0,0),
         max_size=100,
@@ -22,8 +21,8 @@ class Creature(pygame.sprite.Sprite):
     ):
         super(Creature, self).__init__()
         self.name = name
-        self.SCREEN_WIDTH = SCREEN_WIDTH 
-        self.SCREEN_HEIGHT = SCREEN_HEIGHT
+        self.generation = None
+
         self.max_size = max_size
         self.birth_width = width
         self.birth_height = height
@@ -85,4 +84,4 @@ class Creature(pygame.sprite.Sprite):
             self.surf.set_alpha(self.alpha)
 
     def get_attributes(self):
-        return vars(self)
+        return vars(self).copy()

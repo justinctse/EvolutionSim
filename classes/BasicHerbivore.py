@@ -1,12 +1,11 @@
 import random 
 import pygame 
+from config import *
 from classes.Creature import Creature
 # Herbivore that moves completely randomly
 class BasicHerbivore(Creature):
     def __init__(
-        self, 
-        SCREEN_WIDTH,
-        SCREEN_HEIGHT,
+        self,
         name,
         max_size=100,
         width=25,
@@ -20,9 +19,7 @@ class BasicHerbivore(Creature):
         vel_hor=0
     ):
         Creature.__init__(
-            self, 
-            SCREEN_WIDTH, 
-            SCREEN_HEIGHT,
+            self,
             name,
             max_size=max_size,
             width=width,
@@ -55,15 +52,15 @@ class BasicHerbivore(Creature):
             self.rect.left = 0
             self.acc_hor = self.acc_hor * -1
             self.vel_hor = 1
-        if self.rect.right > self.SCREEN_WIDTH:
-            self.rect.right = self.SCREEN_WIDTH
+        if self.rect.right > SCREEN_WIDTH:
+            self.rect.right = SCREEN_WIDTH
             self.acc_hor = self.acc_hor * -1
             self.vel_hor = -1
         if self.rect.top <= 0:
             self.rect.top = 0
             self.acc_vert = self.acc_vert * -1
             self.vel_vert = 1
-        if self.rect.bottom >= self.SCREEN_HEIGHT:
-            self.rect.bottom = self.SCREEN_HEIGHT
+        if self.rect.bottom >= SCREEN_HEIGHT:
+            self.rect.bottom = SCREEN_HEIGHT
             self.acc_vert = self.acc_vert * -1
             self.vel_vert = -1

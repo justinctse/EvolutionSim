@@ -2,14 +2,13 @@ import pygame
 import math
 import numpy as np 
 import random
+from config import *
 from classes.Creature import Creature
 from helper_functions.class_functions import get_distance
 # This is a creature that can detect and track food
 class SearchingHerbivore(Creature):
     def __init__(
-        self, 
-        SCREEN_WIDTH,
-        SCREEN_HEIGHT,
+        self,
         name,
         color = (0,0,0),
         max_size=100,
@@ -26,9 +25,7 @@ class SearchingHerbivore(Creature):
         search_distance_multiplier = 10
     ):
         Creature.__init__(
-            self, 
-            SCREEN_WIDTH, 
-            SCREEN_HEIGHT,
+            self,
             name,
             color=color,
             max_size=max_size,
@@ -96,16 +93,16 @@ class SearchingHerbivore(Creature):
             self.rect.left = 0
             self.acc_hor = self.acc_hor * -1
             self.vel_hor = 1
-        if self.rect.right > self.SCREEN_WIDTH:
-            self.rect.right = self.SCREEN_WIDTH
+        if self.rect.right > SCREEN_WIDTH:
+            self.rect.right = SCREEN_WIDTH
             self.acc_hor = self.acc_hor * -1
             self.vel_hor = -1
         if self.rect.top <= 0:
             self.rect.top = 0
             self.acc_vert = self.acc_vert * -1
             self.vel_vert = 1
-        if self.rect.bottom >= self.SCREEN_HEIGHT:
-            self.rect.bottom = self.SCREEN_HEIGHT
+        if self.rect.bottom >= SCREEN_HEIGHT:
+            self.rect.bottom = SCREEN_HEIGHT
             self.acc_vert = self.acc_vert * -1
             self.vel_vert = -1
 
