@@ -22,6 +22,7 @@ class SearchingHerbivore(Creature):
         acc_hor=0,
         vel_vert=0,
         vel_hor=0,
+        num_offspring_divisor=20,
         search_distance_multiplier = 10
     ):
         Creature.__init__(
@@ -39,7 +40,9 @@ class SearchingHerbivore(Creature):
             acc_vert=acc_vert,
             acc_hor=acc_hor,
             vel_vert=vel_vert,
-            vel_hor=vel_hor)
+            vel_hor=vel_hor,
+            num_offspring_divisor=num_offspring_divisor
+        )
         self.type = 'searcher'
         self.search_distance_multiplier = search_distance_multiplier
         self.search_distance = math.sqrt(math.pow(self.width, 2) + math.pow(self.height, 2)) * self.search_distance_multiplier  # size of the diagonal * a multiplier

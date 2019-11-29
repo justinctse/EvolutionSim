@@ -17,7 +17,8 @@ class Creature(pygame.sprite.Sprite):
         acc_vert=0,
         acc_hor=0,
         vel_vert=0,
-        vel_hor=0
+        vel_hor=0,
+        num_offspring_divisor=20 # Default that every 20 in size results in 1 offspring
     ):
         super(Creature, self).__init__()
         self.name = name
@@ -28,8 +29,8 @@ class Creature(pygame.sprite.Sprite):
         self.birth_height = height
         self.width = width
         self.height = height
-        self.hunger = int(self.max_size/3)
-
+        self.hunger = int(self.max_size/4 + self.birth_width) # You need to eat 1/3 of max_size + initial size to survive
+ 
         self.surf = pygame.Surface((self.width, self.height))
         self.color = color
         self.alpha = 200
@@ -52,7 +53,7 @@ class Creature(pygame.sprite.Sprite):
         self.vel_vert = vel_vert
         self.vel_hor = vel_hor
 
-        self.num_offspring = 2
+        self.num_offspring_divisor = num_offspring_divisor
     
     # metric is speed
     # if we are over the max, then cap it at the max

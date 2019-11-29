@@ -48,20 +48,23 @@ base_jerk = .02
 base_acc_max = .25
 base_vel_max = 2.5
 base_search_distance_multiplier = 10
+base_num_offspring_divisor = 20
 
 # Create objects 
 for i in range(0, num_basic_searching_herbivores):
+    size = int(base_size*random.uniform(.8,1.2))
     creature = SearchingHerbivore(
         SCREEN_WIDTH, 
         SCREEN_HEIGHT, 
         "searching_herbivore_" + str(i),
-        max_size=base_max_size,
-        width=base_size,
-        height=base_size,
-        jerk=base_jerk,
-        acc_max=base_acc_max,
-        vel_max=base_vel_max,
-        search_distance_multiplier=base_search_distance_multiplier
+        max_size=int(base_max_size*random.uniform(.8,1.2)),
+        width=size,
+        height=size,
+        jerk=base_jerk*random.uniform(.8,1.2),
+        acc_max=base_acc_max*random.uniform(.8,1.2),
+        vel_max=base_vel_max*random.uniform(.8,1.2),
+        num_offspring_divisor=base_num_offspring_divisor*random.uniform(.8,1.2),
+        search_distance_multiplier=base_search_distance_multiplier*random.uniform(.8,1.2)
     )
     all_sprites.add(creature)
     creatures.add(creature)
@@ -77,6 +80,7 @@ for i in range(0, num_fast_searching_herbivores):
         jerk=base_jerk * 1.5,
         acc_max=base_acc_max * 1.5,
         vel_max=base_vel_max * 1.5,
+        num_offspring_divisor=base_num_offspring_divisor*random.uniform(.8,1.2),
         search_distance_multiplier=base_search_distance_multiplier
     )
     all_sprites.add(creature)
@@ -95,27 +99,26 @@ round_counter = 0
 simulation_running = True
 
 while simulation_running:
-    print('debug1')
     round_counter += 1
     round_running = True
     
     # Seed the new round
     if round_counter > 1:
-        print('debug2')
         for creature in creatures:
-            for i in range(0, creature.num_offspring):
+            for i in range(0, max(1,int(creature.width/creature.num_offspring_divisor))):
+                size = int(creature.birth_width * random.uniform(.8,1.2))
                 offspring = SearchingHerbivore(
                     SCREEN_WIDTH, 
                     SCREEN_HEIGHT, 
                     creature.name,
                     color=creature.color,
-                    max_size=creature.max_size,
-                    width=creature.birth_width,
-                    height=creature.birth_height,
-                    jerk=creature.jerk,
-                    acc_max=creature.acc_max,
-                    vel_max=creature.vel_max,
-                    search_distance_multiplier=creature.search_distance_multiplier
+                    max_size=int(creature.max_size * random.uniform(.8,1.2)),
+                    width=size,
+                    height=size,
+                    jerk=creature.jerk * random.uniform(.8,1.2),
+                    acc_max=creature.acc_max * random.uniform(.8,1.2),
+                    vel_max=creature.vel_max * random.uniform(.8,1.2),
+                    search_distance_multiplier=creature.search_distance_multiplier * random.uniform(.8,1.2)
                 )
                 all_sprites.add(offspring)
                 creatures.add(offspring)
@@ -129,7 +132,6 @@ while simulation_running:
             food = SuperFood(SCREEN_WIDTH, SCREEN_HEIGHT)
             all_sprites.add(food)
             foods.add(food)
-    print('debug3')
 
     while round_running:
         # This if statement makes sure that we can exit on quit command
