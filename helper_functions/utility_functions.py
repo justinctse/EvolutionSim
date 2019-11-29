@@ -12,9 +12,9 @@ from pygame.locals import (
 )
 # Pause game until input recieved
 def pause(SCREEN_WIDTH, SCREEN_HEIGHT, screen):
-    GAME_FONT = pygame.freetype.SysFont("Times New Roman", 72)
+    pause_font = pygame.freetype.SysFont("Times New Roman", 72)
     # You can use `render` and then blit the text surface ...
-    text_surface, rect = GAME_FONT.render("Paused", (0, 0, 0))
+    text_surface, rect = pause_font.render("Paused", (0,0,0))
     screen.blit(text_surface, (int((SCREEN_WIDTH - rect[2])/2), int((SCREEN_HEIGHT - rect[3])/2)))
     pygame.display.flip()
 
@@ -63,7 +63,7 @@ def pause_time(seconds):
 
 def adjust_frame_rate(frame_rate, key):
     # move this to main game
-    GAME_FONT = pygame.freetype.SysFont("Times New Roman", 72)
+    pause_font = pygame.freetype.SysFont("Times New Roman", 72)
     if key == K_LEFT:
         to_return = frame_rate - 5
     elif key == K_RIGHT:

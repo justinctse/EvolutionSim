@@ -9,6 +9,9 @@ from classes.SearchingHerbivore import SearchingHerbivore
 from classes.BasicHerbivore import BasicHerbivore
 from classes.Foods import BasicFood, SuperFood
 
+#TODO: Change color based on primary stat
+#TODO: Display round in corner
+
 # Import pygame.locals for easier access to key coordinates
 # Updated to conform to flake8 and black standards
 from pygame.locals import (
@@ -134,6 +137,7 @@ while simulation_running:
             foods.add(food)
 
     while round_running:
+
         # This if statement makes sure that we can exit on quit command
         if not simulation_running: 
             round_running = False
@@ -148,6 +152,9 @@ while simulation_running:
                 elif (event.key == K_LEFT) or (event.key == K_RIGHT):
                     frame_rate = adjust_frame_rate(frame_rate, event.key)
 
+        
+        # The background is the first thing that needs to be rendered
+        # I want this after the Pause so the paused text shows on top
         # Fill the screen with white
         #screen.fill((255, 255, 255))
         screen.blit(bg, (0, 0))
@@ -168,12 +175,6 @@ while simulation_running:
         for entity in all_sprites:
             screen.blit(entity.surf, entity.rect)
 
-        # Ensure program maintains a constant frame rate
-        clock.tick(frame_rate)
-
-        # Flip everything to the display
-        pygame.display.flip()
-
         # Round ends if there is no time left
         if len(foods) == 0:
             # Dispose of creatures that did not eat enough
@@ -186,3 +187,14 @@ while simulation_running:
             pygame.display.flip()
             simulation_running, round_running = pause_time(2)
             round_running = False
+        
+        # This is rendered last because I want it to be on top of everything else
+        round_font = pygame.freetype.SysFont("Times New Roman", 32)
+        text_surface, text_rect = round_font.render("Generation " + str(round_counter), (0,0,0))
+        screen.blit(text_surface, (20,20))
+
+        # Ensure program maintains a constant frame rate
+        clock.tick(frame_rate)
+
+        # Flip everything to the display
+        pygame.display.flip()
