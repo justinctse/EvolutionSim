@@ -59,6 +59,7 @@ for i in range(0, num_basic_searching_herbivores):
         acc_max=base_acc_max*random.uniform(.8,1.2),
         vel_max=base_vel_max*random.uniform(.8,1.2),
         num_offspring_divisor=base_num_offspring_divisor*random.uniform(.8,1.2),
+        generation=1,
         search_distance_multiplier=base_search_distance_multiplier*random.uniform(.8,1.2)
     )
     all_sprites.add(creature)
@@ -110,6 +111,8 @@ while simulation_running:
                     jerk=creature.jerk * random.uniform(.8,1.2),
                     acc_max=creature.acc_max * random.uniform(.8,1.2),
                     vel_max=creature.vel_max * random.uniform(.8,1.2),
+                    num_offspring_divisor=creature.num_offspring_divisor * random.uniform(.8,1.2),
+                    generation=creature.generation + 1,
                     search_distance_multiplier=creature.search_distance_multiplier * random.uniform(.8,1.2)
                 )
                 all_sprites.add(offspring)
@@ -167,15 +170,20 @@ while simulation_running:
         if len(foods) == 0:
             # Dispose of creatures that did not eat enough
             out = []
-            skip_fields = ['_Sprite__g', 'surf', 'rect', ]
             for entity in creatures:
                 attributes = entity.get_attributes()
                 for key in skip_fields:
                     attributes.pop(key, None)
-                
+                # Add status for end of round
+                if entity.width < entity.hunger:
+                    status = 'dead'
+                else:
+                    status = 'alive'
+                attributes['status'] = status
+                attributes['round'] = round_counter
                 out.append(attributes)
 
-                # Make sure t''hat death stuff is activated (color red)
+                # Make sure that death stuff is activated (color red)
                 entity.end_of_round_logic()
                 screen.blit(entity.surf, entity.rect)
                 if entity.width < entity.hunger:

@@ -4,3 +4,14 @@ basic_food_amount = 75
 super_food_amount = 25
 num_basic_searching_herbivores = 10
 num_fast_searching_herbivores = 0
+
+# Fields to skip when doing a stats dump
+skip_fields = [
+    '_Sprite__g', 
+    'surf', 
+    'rect',
+    'acc_hor',
+    'acc_vert',
+    'vel_hor',
+    'vel_vert'
+]

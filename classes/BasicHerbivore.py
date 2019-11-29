@@ -16,7 +16,8 @@ class BasicHerbivore(Creature):
         acc_vert=0,
         acc_hor=0,
         vel_vert=0,
-        vel_hor=0
+        vel_hor=0,
+        generation=None
     ):
         Creature.__init__(
             self,
@@ -30,7 +31,9 @@ class BasicHerbivore(Creature):
             acc_vert=acc_vert,
             acc_hor=acc_hor,
             vel_vert=vel_vert,
-            vel_hor=vel_hor)
+            vel_hor=vel_hor,
+            generation=generation
+        )
         self.type = 'basic'
 
     def update_position(self):
