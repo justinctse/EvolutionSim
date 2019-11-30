@@ -1,6 +1,7 @@
 import pygame 
 import pygame.freetype
 import time
+import pandas as pd
 from config import *
 from pygame.locals import (
     RLEACCEL,
@@ -71,3 +72,21 @@ def adjust_frame_rate(frame_rate, key):
         to_return = frame_rate + 5
     print("Framerate: " + str(to_return))
     return max(1, to_return)
+
+# Returns a data frame of stats
+# Input is a group of Creatures
+def get_stats(creatures, round_counter):
+    out = []
+    for entity in creatures:
+        attributes = entity.get_attributes()
+        for key in skip_fields:
+            attributes.pop(key, None)
+        # Add sstatus for end of round
+        if entity.width < entity.hunger:
+            status = 'dead'
+        else:
+            status = 'alive'
+        attributes['status'] = status
+        attributes['round'] = round_counter
+        out.append(attributes)
+    return pd.DataFrame(out)

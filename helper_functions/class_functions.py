@@ -1,4 +1,5 @@
 import math
+# Functions that are to be used inside the classes
 def get_distance(coordinates_1, coordinates_2):
     x1, y1 = coordinates_1[0], coordinates_1[1]
     x2, y2 = coordinates_2[0], coordinates_2[1]

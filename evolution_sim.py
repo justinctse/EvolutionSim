@@ -5,7 +5,7 @@ import numpy as np
 import time
 import pandas as pd
 from config import *
-from helper_functions.utility_functions import pause, pause_time, adjust_frame_rate
+from helper_functions.utility_functions import pause, pause_time, adjust_frame_rate, get_stats
 from classes.Creature import Creature 
 from classes.SearchingHerbivore import SearchingHerbivore
 from classes.BasicHerbivore import BasicHerbivore
@@ -93,6 +93,8 @@ for i in range(0, super_food_amount):
 round_counter = 0
 simulation_running = True
 
+logs = []
+
 while simulation_running:
     round_counter += 1
     round_running = True
@@ -168,29 +170,19 @@ while simulation_running:
 
         # Round ends if there is no time left
         if len(foods) == 0:
+            # This block of code updates the state of each creature for the end of the round
             # Dispose of creatures that did not eat enough
-            out = []
+            round_stats_dt = get_stats(creatures, round_counter)
             for entity in creatures:
-                attributes = entity.get_attributes()
-                for key in skip_fields:
-                    attributes.pop(key, None)
-                # Add status for end of round
-                if entity.width < entity.hunger:
-                    status = 'dead'
-                else:
-                    status = 'alive'
-                attributes['status'] = status
-                attributes['round'] = round_counter
-                out.append(attributes)
-
                 # Make sure that death stuff is activated (color red)
                 entity.end_of_round_logic()
                 screen.blit(entity.surf, entity.rect)
                 if entity.width < entity.hunger:
                     entity.kill()
 
-            print(pd.DataFrame(out).name)
-            print(pd.DataFrame(out))
+            print(round_stats_dt)
+            logs.append(round_stats_dt)
+
             pygame.display.flip()
             simulation_running, round_running = pause_time(2)
             round_running = False
@@ -205,3 +197,6 @@ while simulation_running:
 
         # Flip everything to the display
         pygame.display.flip()
+
+logs_dt = pd.concat(logs)
+print(logs_dt)
