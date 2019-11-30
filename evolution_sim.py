@@ -200,3 +200,4 @@ while simulation_running:
 
 logs_dt = pd.concat(logs)
 print(logs_dt)
+logs_dt.to_csv('logs/'+str(time.time())+'.csv', index=False)
