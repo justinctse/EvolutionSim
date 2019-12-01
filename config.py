@@ -2,7 +2,7 @@ import pygame
 
 SCREEN_WIDTH, SCREEN_HEIGHT = 1200, 800
 frame_rate = 60
-basic_food_amount = 75
+basic_food_amount = 50
 super_food_amount = 25
 num_basic_searching_herbivores = 5
 num_fast_searching_herbivores = 0
@@ -19,3 +19,4 @@ skip_fields = [
 ]
 
 img_hungry = pygame.image.load('assets/hungry_256.png')
+img_basic_food = pygame.image.load('assets/tomato_64.png')

@@ -45,9 +45,6 @@ class SearchingHerbivore(Creature):
         self.type = 'searcher'
         self.search_distance_multiplier = search_distance_multiplier
         self.search_distance = math.sqrt(math.pow(self.width, 2) + math.pow(self.height, 2)) * self.search_distance_multiplier  # size of the diagonal * a multiplier
-        # To save memory, consider replacing this with a the global 
-        self.base_avatar = img_hungry
-        self.avatar = pygame.transform.smoothscale(self.base_avatar, (self.width, self.height))
     
     # Get the closest food given an iterable of foods
     def get_closest_food(self, foods):

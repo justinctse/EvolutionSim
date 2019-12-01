@@ -168,7 +168,7 @@ while simulation_running:
 
         # Draw all our sprites
         for entity in all_sprites:
-            if entity.type == 'searcher':
+            if entity.type in ['searcher', 'basic_food']:
                 screen.blit(entity.avatar, entity.rect)
             else:
                 screen.blit(entity.surf, entity.rect)

@@ -5,10 +5,11 @@ from helper_functions.class_functions import get_distance
 class BasicFood(pygame.sprite.Sprite):
     def __init__(self):
         super(BasicFood, self).__init__()
-        self.type = 'basic'
-        self.size = random.randint(8,12)
+        self.type = 'basic_food'
+        self.size = random.randint(12,24)
         self.value = int(self.size/3)
         self.surf = pygame.Surface((self.size, self.size))
+        self.avatar = pygame.transform.smoothscale(img_basic_food, (self.size, self.size))
         x, y = 0, 0
         while True:
             x, y = random.randint(0, SCREEN_WIDTH), random.randint(0, SCREEN_HEIGHT)
@@ -26,7 +27,7 @@ class BasicFood(pygame.sprite.Sprite):
 class SuperFood(pygame.sprite.Sprite):
     def __init__(self):
         super(SuperFood, self).__init__()
-        self.type = 'super'
+        self.type = 'super_food'
         self.size = random.randint(10,15)
         self.value = int(self.size/2)
         self.surf = pygame.Surface((self.size, self.size))

@@ -6,7 +6,7 @@ class Creature(pygame.sprite.Sprite):
     def __init__(
         self,
         name,
-        color = (0,0,0),
+        color = (0,0,0), # Deprecate
         max_size=100,
         width=15,
         height=15,
@@ -32,8 +32,8 @@ class Creature(pygame.sprite.Sprite):
         self.hunger = int(self.max_size/4 + self.birth_width) # You need to eat 1/3 of max_size + initial size to survive
  
         self.surf = pygame.Surface((self.width, self.height))
-        self.color = color
-        self.alpha = 200
+        self.color = color # Deprecate
+        self.alpha = 200 
         self.surf.fill(self.color)
         self.surf.set_alpha(self.alpha)
 
@@ -58,6 +58,10 @@ class Creature(pygame.sprite.Sprite):
         self.vel_hor = vel_hor
 
         self.num_offspring_divisor = num_offspring_divisor
+
+        # To save memory, consider replacing this with a the global 
+        self.base_avatar = img_hungry
+        self.avatar = pygame.transform.smoothscale(self.base_avatar, (self.width, self.height))
     
     # metric is speed
     # if we are over the max, then cap it at the max
@@ -87,7 +91,9 @@ class Creature(pygame.sprite.Sprite):
             self.jerk = self.birth_jerk * self.speed_inhibitor
             self.acc_max = self.birth_acc_max * self.speed_inhibitor
             self.vel_max = self.birth_vel_max * self.speed_inhibitor
-            print(self.vel_max)
+            
+            # Update image size
+            self.avatar = pygame.transform.smoothscale(self.base_avatar, (self.width, self.height))
 
     def end_of_round_logic(self):
         # If they didn't eat enough, color red
