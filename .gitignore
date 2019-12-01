@@ -1,3 +1,3 @@
 .vscode/settings.json
 logs/*
-!logs/.README.md
+!logs/README.md
