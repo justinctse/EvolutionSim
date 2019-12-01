@@ -99,6 +99,8 @@ while simulation_running:
     round_counter += 1
     round_running = True
     
+    if len(creatures) == 0:
+        simulation_running = False
     # Seed the new round
     if round_counter > 1:
         for creature in creatures:
@@ -166,7 +168,10 @@ while simulation_running:
 
         # Draw all our sprites
         for entity in all_sprites:
-            screen.blit(entity.surf, entity.rect)
+            if entity.type == 'searcher':
+                screen.blit(entity.avatar, entity.rect)
+            else:
+                screen.blit(entity.surf, entity.rect)
 
         # Round ends if there is no time left
         if len(foods) == 0:

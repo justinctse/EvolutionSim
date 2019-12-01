@@ -6,8 +6,8 @@ class BasicFood(pygame.sprite.Sprite):
     def __init__(self):
         super(BasicFood, self).__init__()
         self.type = 'basic'
-        self.size = random.randint(3,8)
-        self.value = int(self.size/2)
+        self.size = random.randint(8,12)
+        self.value = int(self.size/3)
         self.surf = pygame.Surface((self.size, self.size))
         x, y = 0, 0
         while True:
@@ -27,8 +27,8 @@ class SuperFood(pygame.sprite.Sprite):
     def __init__(self):
         super(SuperFood, self).__init__()
         self.type = 'super'
-        self.size = random.randint(4,10)
-        self.value = int(self.size/1.5)
+        self.size = random.randint(10,15)
+        self.value = int(self.size/2)
         self.surf = pygame.Surface((self.size, self.size))
         self.surf.fill((199, 89, 255))
         x, y = 0, 0

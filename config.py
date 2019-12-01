@@ -1,3 +1,5 @@
+import pygame
+
 SCREEN_WIDTH, SCREEN_HEIGHT = 1200, 800
 frame_rate = 60
 basic_food_amount = 75
@@ -15,3 +17,5 @@ skip_fields = [
     'vel_hor',
     'vel_vert'
 ]
+
+img_hungry = pygame.image.load('assets/hungry_256.png')
