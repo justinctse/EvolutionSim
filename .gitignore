@@ -1,3 +1,4 @@
 .vscode/settings.json
 logs/*
 !logs/README.md
+sprite_creation

@@ -44,6 +44,10 @@ class Creature(pygame.sprite.Sprite):
         self.rect = self.surf.get_rect(
                 center=((SCREEN_WIDTH-self.surf.get_width())/2 + x_offset, (SCREEN_HEIGHT-self.surf.get_height())/2 + y_offset))
 
+        self.speed_inhibitor = 0
+        self.birth_jerk = jerk
+        self.birth_acc_max = acc_max
+        self.birth_vel_max = vel_max
         self.jerk = jerk
         self.acc_max = acc_max
         self.vel_max = vel_max
@@ -77,7 +81,14 @@ class Creature(pygame.sprite.Sprite):
             # I'm not gonna lie this code is questionable
             self.rect = self.surf.get_rect(
                 center=(self.rect[0] + self.width/2, self.rect[1] + self.height/2))
-    
+            # Update max speeds
+            # 50% speed hit at 200
+            self.speed_inhibitor = max(.5, 1 - width/(2*200))
+            self.jerk = self.birth_jerk * self.speed_inhibitor
+            self.acc_max = self.birth_acc_max * self.speed_inhibitor
+            self.vel_max = self.birth_vel_max * self.speed_inhibitor
+            print(self.vel_max)
+
     def end_of_round_logic(self):
         # If they didn't eat enough, color red
         if self.width < self.hunger:

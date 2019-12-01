@@ -124,4 +124,11 @@ class SearchingHerbivore(Creature):
             
             # Update parameters
             self.search_distance = math.sqrt(math.pow(self.width, 2) + math.pow(self.height, 2)) * self.search_distance_multiplier
-            # Update max acc and vert???
+            # Update max speeds
+            # 50% speed hit at 200
+            self.speed_inhibitor = max(.5, 1 - self.width/(2*200))
+            self.jerk = self.birth_jerk * self.speed_inhibitor
+            self.acc_max = self.birth_acc_max * self.speed_inhibitor
+            self.vel_max = self.birth_vel_max * self.speed_inhibitor
+
+            print(self.speed_inhibitor)

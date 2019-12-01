@@ -41,14 +41,13 @@ foods = pygame.sprite.Group()
 # Layout base values for Creature parameters
 base_max_size = 100
 base_size = 15
-base_jerk = .05
-base_acc_max = .1
+base_jerk = .02
+base_acc_max = .25
 base_vel_max = 2.5
-base_search_distance_multiplier = 2
+base_search_distance_multiplier = 10
 base_num_offspring_divisor = 20
 
 # Create objects 
-# Instead of a randomizer of .8,1.2 consider +- 20%
 for i in range(0, num_basic_searching_herbivores):
     size = int(base_size*random.uniform(.8,1.2))
     creature = SearchingHerbivore(
@@ -111,9 +110,9 @@ while simulation_running:
                     max_size=int(creature.max_size * random.uniform(.8,1.2)),
                     width=size,
                     height=size,
-                    jerk=creature.jerk * random.uniform(.8,1.2),
-                    acc_max=creature.acc_max * random.uniform(.8,1.2),
-                    vel_max=creature.vel_max * random.uniform(.8,1.2),
+                    jerk=creature.birth_jerk * random.uniform(.8,1.2),
+                    acc_max=creature.birth_acc_max * random.uniform(.8,1.2),
+                    vel_max=creature.birth_vel_max * random.uniform(.8,1.2),
                     num_offspring_divisor=creature.num_offspring_divisor * random.uniform(.8,1.2),
                     generation=creature.generation + 1,
                     search_distance_multiplier=creature.search_distance_multiplier * random.uniform(.8,1.2)
