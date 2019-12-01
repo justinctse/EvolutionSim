@@ -23,7 +23,7 @@ class SearchingHerbivore(Creature):
         vel_hor=0,
         num_offspring_divisor=20,
         generation=None,
-        search_distance_multiplier = 10
+        search_distance_multiplier = 2
     ):
         Creature.__init__(
             self,
