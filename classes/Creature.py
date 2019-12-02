@@ -100,8 +100,9 @@ class Creature(pygame.sprite.Sprite):
     def end_of_round_logic(self):
         # If they didn't eat enough, color red
         if self.width < self.hunger:
-            self.surf.fill((255,0,0))
-            self.surf.set_alpha(self.alpha)
+            #self.surf.fill((255,0,0))
+            #self.surf.set_alpha(self.alpha)
+            self.avatar = pygame.transform.smoothscale(img_dead, (self.width, self.height))
 
     def get_attributes(self):
         return vars(self).copy()

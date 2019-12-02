@@ -26,11 +26,11 @@ from pygame.locals import (
     QUIT,
 )
 
-bg = pygame.image.load("assets/background.png")
-
 pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 clock = pygame.time.Clock()
+
+bg = pygame.image.load("assets/background_1600_900.png").convert_alpha()
 
 # Creating groups
 # all_sprites is used for rendering
@@ -177,10 +177,7 @@ while simulation_running:
 
         # Draw all our sprites
         for entity in all_sprites:
-            if entity.type in ['searcher', 'basic_food', 'super_food']:
-                screen.blit(entity.avatar, entity.rect)
-            else:
-                screen.blit(entity.surf, entity.rect)
+            screen.blit(entity.avatar, entity.rect)
 
         # Round ends if there is no time left
         if len(foods) == 0:
@@ -190,7 +187,7 @@ while simulation_running:
             for entity in creatures:
                 # Make sure that death stuff is activated (color red)
                 entity.end_of_round_logic()
-                screen.blit(entity.surf, entity.rect)
+                screen.blit(entity.avatar, entity.rect)
                 if entity.width < entity.hunger:
                     entity.kill()
 
