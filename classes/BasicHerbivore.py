@@ -17,7 +17,8 @@ class BasicHerbivore(Creature):
         acc_hor=0,
         vel_vert=0,
         vel_hor=0,
-        generation=None
+        generation=None,
+        lineage=[]
     ):
         Creature.__init__(
             self,
@@ -32,7 +33,8 @@ class BasicHerbivore(Creature):
             acc_hor=acc_hor,
             vel_vert=vel_vert,
             vel_hor=vel_hor,
-            generation=generation
+            generation=generation,
+            lineage=lineage
         )
         self.type = 'basic'
 

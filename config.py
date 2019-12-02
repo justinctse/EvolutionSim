@@ -1,6 +1,7 @@
 import pygame
 
 SCREEN_WIDTH, SCREEN_HEIGHT = 1200, 800
+# SCREEN_WIDTH, SCREEN_HEIGHT = 1600, 900
 frame_rate = 60
 basic_food_amount = 50
 super_food_amount = 10

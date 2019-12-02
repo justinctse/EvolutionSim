@@ -18,11 +18,13 @@ class Creature(pygame.sprite.Sprite):
         vel_vert=0,
         vel_hor=0,
         num_offspring_divisor=15, # Default that every x in size results in 1 offspring
-        generation=None
+        generation=None,
+        lineage=[]
     ):
         super(Creature, self).__init__()
         self.name = name
         self.generation = generation
+        self.lineage = lineage
 
         self.max_size = max_size
         self.birth_width = width

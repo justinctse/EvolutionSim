@@ -47,11 +47,14 @@ base_vel_max = 2.5
 base_search_distance_multiplier = 10
 base_num_offspring_divisor = 20
 
+# Counters to name the creatures
+searching_herbivore_counter = 0
+
 # Create objects 
 for i in range(0, num_basic_searching_herbivores):
     size = int(base_size*random.uniform(.8,1.2))
     creature = SearchingHerbivore(
-        "searching_herbivore_" + str(i),
+        "searching_herbivore_" + str(searching_herbivore_counter),
         max_size=int(base_max_size*random.uniform(.8,1.2)),
         width=size,
         height=size,
@@ -60,8 +63,10 @@ for i in range(0, num_basic_searching_herbivores):
         vel_max=base_vel_max*random.uniform(.8,1.2),
         num_offspring_divisor=base_num_offspring_divisor*random.uniform(.8,1.2),
         generation=1,
+        lineage=[],
         search_distance_multiplier=base_search_distance_multiplier*random.uniform(.8,1.2)
     )
+    searching_herbivore_counter += 1
     all_sprites.add(creature)
     creatures.add(creature)
 # for i in range(0, num_fast_searching_herbivores):
@@ -107,7 +112,7 @@ while simulation_running:
             for i in range(0, max(1,int(creature.width/creature.num_offspring_divisor))):
                 size = int(creature.birth_width * random.uniform(.8,1.2))
                 offspring = SearchingHerbivore(
-                    creature.name,
+                    "searching_herbivore_" + str(searching_herbivore_counter),
                     color=creature.color,
                     max_size=int(creature.max_size * random.uniform(.8,1.2)),
                     width=size,
@@ -117,8 +122,12 @@ while simulation_running:
                     vel_max=creature.birth_vel_max * random.uniform(.8,1.2),
                     num_offspring_divisor=creature.num_offspring_divisor * random.uniform(.8,1.2),
                     generation=creature.generation + 1,
+                    lineage = [*creature.lineage, *[creature.name]],
                     search_distance_multiplier=creature.search_distance_multiplier * random.uniform(.8,1.2)
                 )
+                print(offspring.lineage)
+                print([*creature.lineage, *[creature.name]])
+                searching_herbivore_counter += 1
                 all_sprites.add(offspring)
                 creatures.add(offspring)
             creature.kill()

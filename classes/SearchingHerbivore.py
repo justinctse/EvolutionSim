@@ -23,6 +23,7 @@ class SearchingHerbivore(Creature):
         vel_hor=0,
         num_offspring_divisor=20,
         generation=None,
+        lineage=None,
         search_distance_multiplier = 2
     ):
         Creature.__init__(
@@ -40,7 +41,8 @@ class SearchingHerbivore(Creature):
             vel_vert=vel_vert,
             vel_hor=vel_hor,
             num_offspring_divisor=num_offspring_divisor,
-            generation=generation
+            generation=generation,
+            lineage=lineage
         )
         self.type = 'searcher'
         self.search_distance_multiplier = search_distance_multiplier
@@ -133,5 +135,3 @@ class SearchingHerbivore(Creature):
 
             # Update image size
             self.avatar = pygame.transform.smoothscale(self.base_avatar, (self.width, self.height))
-
-            print(self.speed_inhibitor)
