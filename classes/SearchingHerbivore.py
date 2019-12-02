@@ -73,8 +73,8 @@ class SearchingHerbivore(Creature):
             self.vel_hor = 0
         elif get_distance((self.rect[0], self.rect[1]), closest_point) < self.search_distance:
             # get right direction
-            self.acc_vert = self.acc_vert + random.uniform(0, self.jerk) * np.sign(closest_point[1] - self.rect[1])
-            self.acc_hor = self.acc_hor + random.uniform(0, self.jerk) * np.sign(closest_point[0] - self.rect[0])
+            self.acc_vert = self.acc_vert + self.jerk * np.sign(closest_point[1] - self.rect[1])
+            self.acc_hor = self.acc_hor + self.jerk * np.sign(closest_point[0] - self.rect[0])
             self.vel_vert = self.vel_vert + self.acc_vert
             self.vel_hor = self.vel_hor + self.acc_hor
         else:
