@@ -14,7 +14,7 @@ from pygame.locals import (
 )
 # Pause game until input recieved
 def pause(screen):
-    pause_font = pygame.freetype.SysFont("Times New Roman", 72)
+    pause_font = pygame.freetype.SysFont("Roboto", 72)
     # You can use `render` and then blit the text surface ...
     text_surface, rect = pause_font.render("Paused", (0,0,0))
     screen.blit(text_surface, (int((SCREEN_WIDTH - rect[2])/2), int((SCREEN_HEIGHT - rect[3])/2)))
@@ -40,13 +40,30 @@ def pause(screen):
                     round_running = True
     return simulation_running, round_running
 
-# pause game for a specified amount of seconds
-def pause_time(seconds):
+# round transition screen for a specified amount of seconds
+def round_transition_screen(seconds, screen, round_counter, num_surviving, num_dead):
     start_time = time.time()
     simulation_running = True
     round_running = True
     paused = True
+
+    message = """
+    Starting Generation {generation}\n
+    {num_surviving} creatures survived\n
+    {num_dead} creatures died
+    """
+    message = message.format(
+        generation=round_counter+1,
+        num_surviving=num_surviving,
+        num_dead=num_dead
+    )
+    pause_font = pygame.freetype.SysFont("Roboto", 72)
+    text_surface, rect = pause_font.render(message, (0,0,0))
+    screen.blit(text_surface, (int((SCREEN_WIDTH - rect[2])/2), int((SCREEN_HEIGHT - rect[3])/2)))
+    pygame.display.flip()
+
     while paused:
+
         if time.time() - start_time > seconds:
             break
         for event in pygame.event.get():
@@ -63,13 +80,13 @@ def pause_time(seconds):
                     break
     return simulation_running, round_running
 
-def adjust_frame_rate(frame_rate, key):
+def adjust_frame_rate(frame_rate, key, increment = 30):
     # move this to main game
     pause_font = pygame.freetype.SysFont("Times New Roman", 72)
     if key == K_LEFT:
-        to_return = frame_rate - 5
+        to_return = frame_rate - increment
     elif key == K_RIGHT:
-        to_return = frame_rate + 5
+        to_return = frame_rate + increment
     print("Framerate: " + str(to_return))
     return max(1, to_return)
 

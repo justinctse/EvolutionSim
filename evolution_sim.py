@@ -5,11 +5,11 @@ import numpy as np
 import time
 import pandas as pd
 from config import *
-from helper_functions.utility_functions import pause, pause_time, adjust_frame_rate, get_stats
+from helper_functions.utility_functions import pause, round_transition_screen, adjust_frame_rate, get_stats
 from classes.Creature import Creature 
 from classes.SearchingHerbivore import SearchingHerbivore
 from classes.BasicHerbivore import BasicHerbivore
-from classes.Foods import BasicFood, SuperFood
+from classes.Foods import Tomato, Pumpkin
 
 #TODO: Change color based on primary stat
 #TODO: Display round in corner
@@ -86,12 +86,12 @@ for i in range(0, num_basic_searching_herbivores):
 #     creatures.add(creature)
 
 # TODO: Move randomness out of food and into the constructor
-for i in range(0,basic_food_amount):
-    food = BasicFood()
+for i in range(0,num_tomato):
+    food = Tomato()
     all_sprites.add(food)
     foods.add(food) 
-for i in range(0, super_food_amount):
-    food = SuperFood()
+for i in range(0, num_pumpkin):
+    food = Pumpkin()
     all_sprites.add(food)
     foods.add(food)
 
@@ -132,12 +132,12 @@ while simulation_running:
                 creatures.add(offspring)
             creature.kill()
 
-        for i in range(0,basic_food_amount):
-            food = BasicFood()
+        for i in range(0,num_tomato):
+            food = Tomato()
             all_sprites.add(food)
             foods.add(food) 
-        for i in range(0, super_food_amount):
-            food = SuperFood()
+        for i in range(0, num_pumpkin):
+            food = Pumpkin()
             all_sprites.add(food)
             foods.add(food)
 
@@ -194,12 +194,15 @@ while simulation_running:
             print(round_stats_dt)
             logs.append(round_stats_dt)
 
+            num_surviving = len(round_stats_dt[round_stats_dt.status == 'alive'])
+            num_dead = len(round_stats_dt[round_stats_dt.status == 'dead'])
+
             pygame.display.flip()
-            simulation_running, round_running = pause_time(2)
+            simulation_running, round_running = round_transition_screen(2, screen, round_counter, num_surviving, num_dead)
             round_running = False
         
         # This is rendered last because I want it to be on top of everything else
-        round_font = pygame.freetype.SysFont("Times New Roman", 32)
+        round_font = pygame.freetype.SysFont("Roboto", 32)
         text_surface, text_rect = round_font.render("Generation " + str(round_counter), (0,0,0))
         screen.blit(text_surface, (20,20))
 
