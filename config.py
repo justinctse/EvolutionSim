@@ -21,5 +21,6 @@ skip_fields = [
 
 img_hungry = pygame.image.load('assets/hungry_256.png')
 img_dead = pygame.image.load('assets/dead_256.png')
+img_happy = pygame.image.load('assets/happy_256.png')
 img_tomato = pygame.image.load('assets/tomato_64.png')
 img_pumpkin = pygame.image.load('assets/pumpkin_64.png')

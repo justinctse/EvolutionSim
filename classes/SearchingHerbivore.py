@@ -134,4 +134,7 @@ class SearchingHerbivore(Creature):
             self.vel_max = self.birth_vel_max * self.speed_inhibitor
 
             # Update image size
-            self.avatar = pygame.transform.smoothscale(self.base_avatar, (self.width, self.height))
+            if (self.width >= self.max_size) & (self.height >= self.max_size):
+                self.avatar = pygame.transform.smoothscale(img_happy, (self.width, self.height))
+            else:
+                self.avatar = pygame.transform.smoothscale(self.base_avatar, (self.width, self.height))
