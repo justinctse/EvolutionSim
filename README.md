@@ -41,7 +41,9 @@ The following traits can be passed down to the next generation.
 `config.py` has many variables that determine the initial state of the simulation. 
 
 `num_tomato`, `num_pumpkin`, `num_grape` - The amount of food generated in each generation. 
+
 `num_basic_searching_herbivores` - The number of creatures generated in the starting generation. 
+
 `base_...` - The base values of the Traits defined above for the first generation. Note that these values will be randomly mutated even for the first generation of creatures.
 
 ## User Input
