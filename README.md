@@ -1,5 +1,5 @@
 # Evolution Simulation
-The simulation consists of an endless number of rounds. In each round, $n$ creatures are spawned in the center of the screen and food is spawned outside of the center. Creatures will move around, eat food, and grow until all the food is consumed. If they eat enough food, they will produce offspring and pass on their traits. The traits of their offspring will be randomly mutated based on the parent's values. 
+The simulation consists of an endless number of rounds. In each round, *n* creatures are spawned in the center of the screen and food is spawned outside of the center. Creatures will move around, eat food, and grow until all the food is consumed. If they eat enough food, they will produce offspring and pass on their traits. The traits of their offspring will be randomly mutated based on the parent's values. 
 
 To run the simulation:
 1. Run `pip install -r requirements.txt` or install the requirements into a virtual environment.
