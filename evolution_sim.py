@@ -109,6 +109,7 @@ while simulation_running:
     # Seed the new round
     if round_counter > 1:
         for creature in creatures:
+            # TODO: Move the num_offspring calculation to in the class
             for i in range(0, max(1,int(creature.width/creature.num_offspring_divisor))):
                 size = int(creature.birth_width * random.uniform(.8,1.2))
                 offspring = SearchingHerbivore(
@@ -123,7 +124,7 @@ while simulation_running:
                     num_offspring_divisor=creature.num_offspring_divisor * random.uniform(.8,1.2),
                     generation=creature.generation + 1,
                     lineage = [*creature.lineage, *[creature.name]],
-                    search_distance_multiplier=creature.search_distance_multiplier * random.uniform(.8,1.2)
+                    search_distance=creature.search_distance * random.uniform(.8,1.2)
                 )
                 print(offspring.lineage)
                 print([*creature.lineage, *[creature.name]])
