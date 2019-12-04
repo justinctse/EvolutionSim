@@ -9,7 +9,7 @@ from helper_functions.utility_functions import pause, round_transition_screen, a
 from classes.Creature import Creature 
 from classes.SearchingHerbivore import SearchingHerbivore
 from classes.BasicHerbivore import BasicHerbivore
-from classes.Foods import Tomato, Pumpkin
+from classes.Foods import Tomato, Grape, Pumpkin
 
 #TODO: Change color based on primary stat
 #TODO: Display round in corner
@@ -85,6 +85,10 @@ for i in range(0, num_pumpkin):
     food = Pumpkin()
     all_sprites.add(food)
     foods.add(food)
+for i in range(0, num_grape):
+    food = Grape()
+    all_sprites.add(food)
+    foods.add(food)
 
 round_counter = 0
 simulation_running = True
@@ -130,6 +134,10 @@ while simulation_running:
             foods.add(food) 
         for i in range(0, num_pumpkin):
             food = Pumpkin()
+            all_sprites.add(food)
+            foods.add(food)
+        for i in range(0, num_grape):
+            food = Grape()
             all_sprites.add(food)
             foods.add(food)
 

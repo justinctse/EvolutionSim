@@ -2,8 +2,9 @@ import pygame
 
 SCREEN_WIDTH, SCREEN_HEIGHT = 1600, 900
 frame_rate = 60 # Base frame rate
-num_tomato = 50
+num_tomato = 30
 num_pumpkin = 10
+num_grape = 15
 num_basic_searching_herbivores = 10
 
 # Base Creature parameters for round 1
@@ -33,3 +34,4 @@ img_happy = pygame.image.load('assets/happy_256.png')
 img_neutral = pygame.image.load('assets/neutral_256.png')
 img_tomato = pygame.image.load('assets/tomato_64.png')
 img_pumpkin = pygame.image.load('assets/pumpkin_64.png')
+img_grape = pygame.image.load('assets/grape_64.png')
