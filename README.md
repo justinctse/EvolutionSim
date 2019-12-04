@@ -7,9 +7,7 @@ The simulation ends on user input, or when there is a round with no offspring.
   <img src="./assets/creature_states.png" width = 430>
 </p>
 <center>
-
 *The different states of the creatures in the simulation. Hungry, Neutral, Satisfied.*
-
 </center>
 
 ## Traits
