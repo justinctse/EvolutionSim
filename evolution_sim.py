@@ -38,15 +38,6 @@ all_sprites = pygame.sprite.Group()
 creatures = pygame.sprite.Group()
 foods = pygame.sprite.Group()
 
-# Layout base values for Creature parameters
-base_max_size = 100
-base_size = 15
-base_jerk = .02
-base_acc_max = .25
-base_vel_max = 2.5
-base_search_distance = 150
-base_num_offspring_divisor = 20
-
 # Counters to name the creatures
 searching_herbivore_counter = 0
 

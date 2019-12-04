@@ -1,11 +1,19 @@
 import pygame
 
 SCREEN_WIDTH, SCREEN_HEIGHT = 1600, 900
-frame_rate = 60
+frame_rate = 60 # Base frame rate
 num_tomato = 50
 num_pumpkin = 10
 num_basic_searching_herbivores = 10
-num_fast_searching_herbivores = 0
+
+# Base Creature parameters for round 1
+base_max_size = 100
+base_size = 15
+base_jerk = .02
+base_acc_max = .25
+base_vel_max = 2.5
+base_search_distance = 150
+base_num_offspring_divisor = 20
 
 # Fields to skip when doing a stats dump
 skip_fields = [
@@ -18,6 +26,7 @@ skip_fields = [
     'vel_vert'
 ]
 
+# Loading in assets
 img_hungry = pygame.image.load('assets/hungry_256.png')
 img_dead = pygame.image.load('assets/dead_256.png')
 img_happy = pygame.image.load('assets/happy_256.png')
