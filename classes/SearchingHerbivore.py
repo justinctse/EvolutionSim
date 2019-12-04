@@ -24,7 +24,7 @@ class SearchingHerbivore(Creature):
         num_offspring_divisor=20,
         generation=None,
         lineage=None,
-        search_distance_multiplier = 2
+        search_distance = 100
     ):
         Creature.__init__(
             self,
@@ -45,8 +45,7 @@ class SearchingHerbivore(Creature):
             lineage=lineage
         )
         self.type = 'searcher'
-        self.search_distance_multiplier = search_distance_multiplier
-        self.search_distance = math.sqrt(math.pow(self.width, 2) + math.pow(self.height, 2)) * self.search_distance_multiplier  # size of the diagonal * a multiplier
+        self.search_distance = search_distance
     
     # Get the closest food given an iterable of foods
     def get_closest_food(self, foods):
@@ -125,7 +124,7 @@ class SearchingHerbivore(Creature):
                 center=(self.rect[0] + self.width/2, self.rect[1] + self.height/2))
             
             # Update parameters
-            self.search_distance = math.sqrt(math.pow(self.width, 2) + math.pow(self.height, 2)) * self.search_distance_multiplier
+            
             # Update max speeds
             # 50% speed hit at 200
             self.speed_inhibitor = max(.5, 1 - self.width/(2*200))
@@ -136,5 +135,7 @@ class SearchingHerbivore(Creature):
             # Update image size
             if (self.width >= self.max_size) & (self.height >= self.max_size):
                 self.avatar = pygame.transform.smoothscale(img_happy, (self.width, self.height))
+            elif (self.width >= self.max_size * .75) & (self.height >= self.max_size * .75):
+                self.avatar = pygame.transform.smoothscale(img_neutral, (self.width, self.height))
             else:
                 self.avatar = pygame.transform.smoothscale(self.base_avatar, (self.width, self.height))

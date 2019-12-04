@@ -44,7 +44,7 @@ base_size = 15
 base_jerk = .02
 base_acc_max = .25
 base_vel_max = 2.5
-base_search_distance_multiplier = 10
+base_search_distance = 150
 base_num_offspring_divisor = 20
 
 # Counters to name the creatures
@@ -64,7 +64,7 @@ for i in range(0, num_basic_searching_herbivores):
         num_offspring_divisor=base_num_offspring_divisor*random.uniform(.8,1.2),
         generation=1,
         lineage=[],
-        search_distance_multiplier=base_search_distance_multiplier*random.uniform(.8,1.2)
+        search_distance=base_search_distance*random.uniform(.8,1.2)
     )
     searching_herbivore_counter += 1
     all_sprites.add(creature)
