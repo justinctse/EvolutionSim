@@ -10,6 +10,7 @@ class Creature(pygame.sprite.Sprite):
         max_size=100,
         width=15,
         height=15,
+        defense=0,
         jerk=.02,
         acc_max=.25,
         vel_max=2.5,
@@ -31,6 +32,7 @@ class Creature(pygame.sprite.Sprite):
         self.birth_height = height
         self.width = width
         self.height = height
+        self.defense = defense
         self.hunger = int(self.max_size/4 + self.birth_width) # You need to eat 1/3 of max_size + initial size to survive
  
         self.surf = pygame.Surface((self.width, self.height))
