@@ -37,8 +37,6 @@ bg = pygame.image.load("assets/background_1600_900.png").convert_alpha()
 # all_sprites is used for rendering
 all_sprites = pygame.sprite.Group()
 creatures = pygame.sprite.Group()
-herbivores = pygame.sprite.Group()
-predators = pygame.sprite.Group()
 foods = pygame.sprite.Group()
 
 # Counters to name the creatures
@@ -65,43 +63,26 @@ for i in range(0, num_basic_searching_herbivores):
     searching_herbivore_counter += 1
     all_sprites.add(creature)
     creatures.add(creature)
-    herbivores.add(creature)
 for i in range(0, num_predator):
-    size = int(base_size*random.uniform(.8,1.2))
+    size = int(base_predator_size*random.uniform(.8,1.2))
     creature = Predator(
         "predator_" + str(predator_counter),
-        max_size=int(base_max_size*random.uniform(.8,1.2)),
+        max_size=int(base_predator_max_size*random.uniform(.8,1.2)),
         width=size,
         height=size,
-        defense=max(0, base_defense*random.uniform(.8,1.2)),
-        jerk=base_jerk*random.uniform(.8,1.2),
-        acc_max=base_acc_max*random.uniform(.8,1.2),
-        vel_max=base_vel_max*random.uniform(.8,1.2),
-        num_offspring_divisor=base_num_offspring_divisor*random.uniform(.8,1.2),
+        defense=max(0, base_predator_defense*random.uniform(.8,1.2)),
+        jerk=base_predator_jerk*random.uniform(.8,1.2),
+        acc_max=base_predator_acc_max*random.uniform(.8,1.2),
+        vel_max=base_predator_vel_max*random.uniform(.8,1.2),
+        num_offspring_divisor=base_predator_num_offspring_divisor*random.uniform(.8,1.2),
         generation=1,
         lineage=[],
-        search_distance=base_search_distance*random.uniform(.8,1.2),
-        attack=max(0, base_attack*random.uniform(.8,1.2))
+        search_distance=base_predator_search_distance*random.uniform(.8,1.2),
+        attack=max(0, base_predator_attack*random.uniform(.8,1.2))
     )
     predator_counter += 1
     all_sprites.add(creature)
     creatures.add(creature)
-    predators.add(creature)
-# for i in range(0, num_fast_searching_herbivores):
-#     creature = SearchingHerbivore(
-#         "searching_herbivore_" + str(i),
-#         color = (0,0,255),
-#         max_size=base_max_size,
-#         width=base_size,
-#         height=base_size,
-#         jerk=base_jerk * 1.5,
-#         acc_max=base_acc_max * 1.5,
-#         vel_max=base_vel_max * 1.5,
-#         num_offspring_divisor=base_num_offspring_divisor*random.uniform(.8,1.2),
-#         search_distance_multiplier=base_search_distance_multiplier
-#     )
-#     all_sprites.add(creature)
-#     creatures.add(creature)
 
 # TODO: Move randomness out of food and into the constructor
 for i in range(0,num_tomato):
@@ -132,27 +113,50 @@ while simulation_running:
     if round_counter > 1:
         for creature in creatures:
             # TODO: Move the num_offspring calculation to in the class
-            for i in range(0, max(1,int(creature.width/creature.num_offspring_divisor))):
-                size = int(creature.birth_width * random.uniform(.8,1.2))
-                offspring = SearchingHerbivore(
-                    "searching_herbivore_" + str(searching_herbivore_counter),
-                    color=creature.color,
-                    max_size=int(creature.max_size * random.uniform(.8,1.2)),
-                    width=size,
-                    height=size,
-                    jerk=creature.birth_jerk * random.uniform(.8,1.2),
-                    acc_max=creature.birth_acc_max * random.uniform(.8,1.2),
-                    vel_max=creature.birth_vel_max * random.uniform(.8,1.2),
-                    num_offspring_divisor=creature.num_offspring_divisor * random.uniform(.8,1.2),
-                    generation=creature.generation + 1,
-                    lineage = [*creature.lineage, *[creature.name]],
-                    search_distance=creature.search_distance * random.uniform(.8,1.2)
-                )
-                print(offspring.lineage)
-                print([*creature.lineage, *[creature.name]])
-                searching_herbivore_counter += 1
-                all_sprites.add(offspring)
-                creatures.add(offspring)
+            if creature.type == 'searcher':
+                for i in range(0, max(1,int(creature.width/creature.num_offspring_divisor))):
+                    size = int(creature.birth_width * random.uniform(.8,1.2))
+                    offspring = SearchingHerbivore(
+                        "searching_herbivore_" + str(searching_herbivore_counter),
+                        color=creature.color,
+                        max_size=int(creature.max_size * random.uniform(.8,1.2)),
+                        width=size,
+                        height=size,
+                        defense=max(0,creature.defense * random.uniform(.8,1.2)),
+                        jerk=creature.birth_jerk * random.uniform(.8,1.2),
+                        acc_max=creature.birth_acc_max * random.uniform(.8,1.2),
+                        vel_max=creature.birth_vel_max * random.uniform(.8,1.2),
+                        num_offspring_divisor=creature.num_offspring_divisor * random.uniform(.8,1.2),
+                        generation=creature.generation + 1,
+                        lineage = [*creature.lineage, *[creature.name]],
+                        search_distance=creature.search_distance * random.uniform(.8,1.2)
+                    )
+                    print(offspring.lineage)
+                    print([*creature.lineage, *[creature.name]])
+                    searching_herbivore_counter += 1
+                    all_sprites.add(offspring)
+                    creatures.add(offspring)
+            elif creature.type == 'predator':
+                for i in range(0, max(1,int(creature.width/creature.num_offspring_divisor))):
+                    size = int(creature.birth_width*random.uniform(.8,1.2))
+                    offspring = Predator(
+                        "predator_" + str(predator_counter),
+                        max_size=int(creature.max_size*random.uniform(.8,1.2)),
+                        width=size,
+                        height=size,
+                        defense=max(0, creature.defense*random.uniform(.8,1.2)),
+                        jerk=creature.jerk*random.uniform(.8,1.2),
+                        acc_max=creature.acc_max*random.uniform(.8,1.2),
+                        vel_max=creature.vel_max*random.uniform(.8,1.2),
+                        num_offspring_divisor=creature.num_offspring_divisor*random.uniform(.8,1.2),
+                        generation=1,
+                        lineage=[],
+                        search_distance=creature.search_distance*random.uniform(.8,1.2),
+                        attack=max(0, creature.attack*random.uniform(.8,1.2))
+                    )
+                    predator_counter += 1
+                    all_sprites.add(offspring)
+                    creatures.add(offspring)
             creature.kill()
 
         for i in range(0,num_tomato):
@@ -204,13 +208,17 @@ while simulation_running:
                 creature_collisions = pygame.sprite.spritecollide(entity, creatures, dokill=False)
                 for creature_collider in creature_collisions:
                     if creature_collider.name != entity.name:
-                        entity.grow(int(creature_collider.width/2)) # Grow by half the width
-                        creature_collider.kill()
+                        # See if entity can eat the creature
+                        if (entity.width + entity.attack) > (creature_collider.width + creature_collider.defense):
+                            # Only eat the other creature if hungry
+                            if entity.width < entity.max_size:
+                                entity.grow(int(creature_collider.width/2)) # Grow by half the width
+                                creature_collider.kill()
             # Move sprites
             if entity.type == 'searcher':
                 entity.update_position(foods)
             if entity.type == 'predator':
-                entity.update_position(herbivores)
+                entity.update_position(creatures)
 
         # Draw all our sprites
         for entity in all_sprites:

@@ -67,24 +67,26 @@ class Predator(Creature):
                 center=(x, y)
             )
 
-        # Get the closest edible herbivore given a list of herbivores 
-    def get_closest_food(self, herbivores):
-        if len(herbivores) == 0:
+    # Get the closest edible creature
+    def get_closest_food(self, creatures):
+        if len(creatures) == 0:
             return None
         closest_point = None
         min_distance = 99999
-        for herbivore in herbivores:
-            coordinates = (herbivore.rect[0], herbivore.rect[1])
+        for creature in creatures:
+            if creature.name == self.name:
+                continue
+            coordinates = (creature.rect[0], creature.rect[1])
             distance = get_distance((self.rect[0], self.rect[1]), coordinates)
-            if self.width >= herbivore.width: # Check if they are edible
+            if (self.width + self.attack) > (creature.width + creature.defense): # Check if they are edible
                 if distance < min_distance:
                     closest_point = coordinates
                     min_distance = distance 
         return closest_point
     
     # Don't move if full
-    def update_position(self, herbivores):
-        closest_point = self.get_closest_food(herbivores)
+    def update_position(self, creatures):
+        closest_point = self.get_closest_food(creatures)
         if (self.width >= self.max_size) & (self.height >= self.max_size):
             self.acc_vert = 0
             self.acc_hor = 0
