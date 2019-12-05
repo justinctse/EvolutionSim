@@ -9,6 +9,7 @@ from helper_functions.utility_functions import pause, round_transition_screen, a
 from classes.Creature import Creature 
 from classes.SearchingHerbivore import SearchingHerbivore
 from classes.BasicHerbivore import BasicHerbivore
+from classes.Predator import Predator
 from classes.Foods import Tomato, Grape, Pumpkin
 
 #TODO: Change color based on primary stat
@@ -36,10 +37,13 @@ bg = pygame.image.load("assets/background_1600_900.png").convert_alpha()
 # all_sprites is used for rendering
 all_sprites = pygame.sprite.Group()
 creatures = pygame.sprite.Group()
+herbivores = pygame.sprite.Group()
+predators = pygame.sprite.Group()
 foods = pygame.sprite.Group()
 
 # Counters to name the creatures
 searching_herbivore_counter = 0
+predator_counter = 0
 
 # Create objects 
 for i in range(0, num_basic_searching_herbivores):
@@ -49,6 +53,7 @@ for i in range(0, num_basic_searching_herbivores):
         max_size=int(base_max_size*random.uniform(.8,1.2)),
         width=size,
         height=size,
+        defense=max(0, base_defense*random.uniform(.8,1.2)),
         jerk=base_jerk*random.uniform(.8,1.2),
         acc_max=base_acc_max*random.uniform(.8,1.2),
         vel_max=base_vel_max*random.uniform(.8,1.2),
@@ -60,6 +65,28 @@ for i in range(0, num_basic_searching_herbivores):
     searching_herbivore_counter += 1
     all_sprites.add(creature)
     creatures.add(creature)
+    herbivores.add(creature)
+for i in range(0, num_predator):
+    size = int(base_size*random.uniform(.8,1.2))
+    creature = Predator(
+        "predator_" + str(predator_counter),
+        max_size=int(base_max_size*random.uniform(.8,1.2)),
+        width=size,
+        height=size,
+        defense=max(0, base_defense*random.uniform(.8,1.2)),
+        jerk=base_jerk*random.uniform(.8,1.2),
+        acc_max=base_acc_max*random.uniform(.8,1.2),
+        vel_max=base_vel_max*random.uniform(.8,1.2),
+        num_offspring_divisor=base_num_offspring_divisor*random.uniform(.8,1.2),
+        generation=1,
+        lineage=[],
+        search_distance=base_search_distance*random.uniform(.8,1.2),
+        attack=max(0, base_attack*random.uniform(.8,1.2))
+    )
+    predator_counter += 1
+    all_sprites.add(creature)
+    creatures.add(creature)
+    predators.add(creature)
 # for i in range(0, num_fast_searching_herbivores):
 #     creature = SearchingHerbivore(
 #         "searching_herbivore_" + str(i),
@@ -165,15 +192,25 @@ while simulation_running:
 
         for entity in creatures:
             # Check for collisions
-            collider = pygame.sprite.spritecollideany(entity, foods)
-            if collider:
-                entity.grow(collider.value)
-                collider.kill()
+            # Herbivores colliding with food
+            if entity.type == 'searcher':
+                food_collider = pygame.sprite.spritecollideany(entity, foods)
+                if food_collider:
+                    entity.grow(food_collider.value)
+                    food_collider.kill()
+            # Predator colliding with creature
+            if entity.type == 'predator':
+                # He can collide with himself
+                creature_collisions = pygame.sprite.spritecollide(entity, creatures, dokill=False)
+                for creature_collider in creature_collisions:
+                    if creature_collider.name != entity.name:
+                        entity.grow(int(creature_collider.width/2)) # Grow by half the width
+                        creature_collider.kill()
             # Move sprites
-            if entity.type == 'basic':
-                entity.update_position()
             if entity.type == 'searcher':
                 entity.update_position(foods)
+            if entity.type == 'predator':
+                entity.update_position(herbivores)
 
         # Draw all our sprites
         for entity in all_sprites:

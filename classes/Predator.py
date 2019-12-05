@@ -5,8 +5,9 @@ import random
 from config import *
 from classes.Creature import Creature
 from helper_functions.class_functions import get_distance
-# This is a creature that can detect and track food
-class SearchingHerbivore(Creature):
+# This is a creature eats other creatures
+# It should stop once it has had enough food
+class Predator(Creature):
     def __init__(
         self,
         name,
@@ -25,7 +26,8 @@ class SearchingHerbivore(Creature):
         num_offspring_divisor=20,
         generation=None,
         lineage=None,
-        search_distance = 100
+        search_distance = 100,
+        attack=0
     ):
         Creature.__init__(
             self,
@@ -46,32 +48,54 @@ class SearchingHerbivore(Creature):
             generation=generation,
             lineage=lineage
         )
-        self.type = 'searcher'
+        self.type = 'predator'
         self.search_distance = search_distance
-    
-    # Get the closest food given an iterable of foods
-    def get_closest_food(self, foods):
-        if len(foods) == 0:
+        self.avatar = pygame.transform.smoothscale(img_hungry_predator, (self.width, self.height))
+        self.attack = attack
+
+        # Overwriting code in the base class
+        # Spawn away from the center
+        x, y = 0, 0
+        while True:
+            x, y = random.randint(0, SCREEN_WIDTH), random.randint(0, SCREEN_HEIGHT)
+            # If too close to the center reroll location
+            if get_distance((x,y), (SCREEN_WIDTH/2, SCREEN_HEIGHT/2)) < 400:
+                x, y = random.randint(0, SCREEN_WIDTH), random.randint(0, SCREEN_HEIGHT)
+            else:
+                break
+        self.rect = self.surf.get_rect(
+                center=(x, y)
+            )
+
+        # Get the closest edible herbivore given a list of herbivores 
+    def get_closest_food(self, herbivores):
+        if len(herbivores) == 0:
             return None
         closest_point = None
         min_distance = 99999
-        for food in foods:
-            coordinates = (food.rect[0], food.rect[1])
+        for herbivore in herbivores:
+            coordinates = (herbivore.rect[0], herbivore.rect[1])
             distance = get_distance((self.rect[0], self.rect[1]), coordinates)
-            if distance < min_distance:
-                closest_point = coordinates
-                min_distance = distance
+            if self.width >= herbivore.width: # Check if they are edible
+                if distance < min_distance:
+                    closest_point = coordinates
+                    min_distance = distance 
         return closest_point
-
-    # TODO: Create a better death function
-
-    def update_position(self, foods):
-        closest_point = self.get_closest_food(foods)
-        if closest_point is None:
+    
+    # Don't move if full
+    def update_position(self, herbivores):
+        closest_point = self.get_closest_food(herbivores)
+        if (self.width >= self.max_size) & (self.height >= self.max_size):
             self.acc_vert = 0
             self.acc_hor = 0
             self.vel_vert = 0
             self.vel_hor = 0
+        elif closest_point is None:
+            # random movement
+            self.acc_vert = self.acc_vert + random.uniform(-1 * self.jerk, self.jerk)
+            self.acc_hor = self.acc_hor + random.uniform(-1 * self.jerk, self.jerk)
+            self.vel_vert = self.vel_vert + self.acc_vert
+            self.vel_hor = self.vel_hor + self.acc_hor
         elif get_distance((self.rect[0], self.rect[1]), closest_point) < self.search_distance:
             # get right direction
             self.acc_vert = self.acc_vert + self.jerk * np.sign(closest_point[1] - self.rect[1])
@@ -84,7 +108,7 @@ class SearchingHerbivore(Creature):
             self.acc_hor = self.acc_hor + random.uniform(-1 * self.jerk, self.jerk)
             self.vel_vert = self.vel_vert + self.acc_vert
             self.vel_hor = self.vel_hor + self.acc_hor
-
+        
         # handling max acceleration or velocity
         self.vel_vert = self.handle_max_speed(self.vel_vert, self.vel_max, abs(self.acc_vert))
         self.vel_hor = self.handle_max_speed(self.vel_hor, self.vel_max, abs(self.acc_hor))
@@ -111,8 +135,7 @@ class SearchingHerbivore(Creature):
             self.acc_vert = self.acc_vert * -1
             self.vel_vert = -1
 
-    # Overriding the original function, I need to do this so that
-    # search distance is updated (Note i dont update search distance anymore)
+    # Overriding the original function
     def grow(self, growth_increment = 5):
         if (self.width < self.max_size) & (self.height < self.max_size):
             # Grow the sprite
@@ -134,10 +157,12 @@ class SearchingHerbivore(Creature):
             self.acc_max = self.birth_acc_max * self.speed_inhibitor
             self.vel_max = self.birth_vel_max * self.speed_inhibitor
 
+            self.avatar = pygame.transform.smoothscale(img_hungry_predator, (self.width, self.height))
+
             # Update image size
-            if (self.width >= self.max_size) & (self.height >= self.max_size):
-                self.avatar = pygame.transform.smoothscale(img_happy, (self.width, self.height))
-            elif (self.width >= self.max_size * .75) & (self.height >= self.max_size * .75):
-                self.avatar = pygame.transform.smoothscale(img_neutral, (self.width, self.height))
-            else:
-                self.avatar = pygame.transform.smoothscale(self.base_avatar, (self.width, self.height))
+            # if (self.width >= self.max_size) & (self.height >= self.max_size):
+            #     self.avatar = pygame.transform.smoothscale(img_happy, (self.width, self.height))
+            # elif (self.width >= self.max_size * .75) & (self.height >= self.max_size * .75):
+            #     self.avatar = pygame.transform.smoothscale(img_neutral, (self.width, self.height))
+            # else:
+            #     self.avatar = pygame.transform.smoothscale(self.base_avatar, (self.width, self.height))
