@@ -5,8 +5,8 @@ frame_rate = 60 # Base frame rate
 num_tomato = 30
 num_pumpkin = 10
 num_grape = 15
-num_basic_searching_herbivores = 20
-num_predator = 1
+num_basic_searching_herbivores = 1
+num_predator = 8
 
 # Base Creature parameters for round 1
 base_max_size = 100
@@ -49,6 +49,8 @@ img_neutral = pygame.image.load('assets/neutral_256.png')
 
 img_hungry_predator = pygame.image.load('assets/hungry_predator_256.png')
 img_sleepy_predator = pygame.image.load('assets/sleepy_predator_256.png')
+img_dead_predator = pygame.image.load('assets/dead_predator_256.png')
+
 
 img_tomato = pygame.image.load('assets/tomato_64.png')
 img_pumpkin = pygame.image.load('assets/pumpkin_64.png')

@@ -37,6 +37,7 @@ bg = pygame.image.load("assets/background_1600_900.png").convert_alpha()
 # all_sprites is used for rendering
 all_sprites = pygame.sprite.Group()
 creatures = pygame.sprite.Group()
+herbivores = pygame.sprite.Group()
 foods = pygame.sprite.Group()
 
 # Counters to name the creatures
@@ -63,6 +64,7 @@ for i in range(0, num_basic_searching_herbivores):
     searching_herbivore_counter += 1
     all_sprites.add(creature)
     creatures.add(creature)
+    herbivores.add(creature)
 for i in range(0, num_predator):
     size = int(base_predator_size*random.uniform(.8,1.2))
     creature = Predator(
@@ -136,6 +138,7 @@ while simulation_running:
                     searching_herbivore_counter += 1
                     all_sprites.add(offspring)
                     creatures.add(offspring)
+                    herbivores.add(offspring)
             elif creature.type == 'predator':
                 for i in range(0, max(1,int(creature.width/creature.num_offspring_divisor))):
                     size = int(creature.birth_width*random.uniform(.8,1.2))
@@ -212,7 +215,7 @@ while simulation_running:
                         if (entity.width + entity.attack) > (creature_collider.width + creature_collider.defense):
                             # Only eat the other creature if hungry
                             if entity.width < entity.max_size:
-                                entity.grow(int(creature_collider.width/2)) # Grow by half the width
+                                entity.grow(int(creature_collider.width/1.5))
                                 creature_collider.kill()
             # Move sprites
             if entity.type == 'searcher':
@@ -223,7 +226,13 @@ while simulation_running:
         # Draw all our sprites
         for entity in all_sprites:
             screen.blit(entity.avatar, entity.rect)
-
+        if len(herbivores) == 0:
+            for food in foods:
+                food.kill()
+            for entity in all_sprites:
+                screen.blit(entity.avatar, entity.rect)
+            round_running = False
+            pygame.display.flip()
         # Round ends if there is no time left
         if len(foods) == 0:
             # This block of code updates the state of each creature for the end of the round

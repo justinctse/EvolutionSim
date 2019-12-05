@@ -67,8 +67,10 @@ class Predator(Creature):
                 center=(x, y)
             )
 
-    # Get the closest edible creature
+    # Get the closest edible herbivore 
+    # (predators can eat their own but they won't actively hunt them)
     # Todo: add variable to target biggest edible creature
+    # Predators can ea
     def get_closest_food(self, creatures):
         if len(creatures) == 0:
             return None
@@ -76,6 +78,8 @@ class Predator(Creature):
         min_distance = 99999
         for creature in creatures:
             if creature.name == self.name:
+                continue
+            if creature.type != 'searcher':
                 continue
             coordinates = (creature.rect[0], creature.rect[1])
             distance = get_distance((self.rect[0], self.rect[1]), coordinates)
@@ -173,3 +177,6 @@ class Predator(Creature):
             #     self.avatar = pygame.transform.smoothscale(img_neutral, (self.width, self.height))
             # else:
             #     self.avatar = pygame.transform.smoothscale(self.base_avatar, (self.width, self.height))
+    def end_of_round_logic(self):
+        if self.width < self.hunger:
+            self.avatar = pygame.transform.smoothscale(img_dead_predator, (self.width, self.height))
