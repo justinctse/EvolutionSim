@@ -68,6 +68,7 @@ class Predator(Creature):
             )
 
     # Get the closest edible creature
+    # Todo: add variable to target biggest edible creature
     def get_closest_food(self, creatures):
         if len(creatures) == 0:
             return None
@@ -159,7 +160,11 @@ class Predator(Creature):
             self.acc_max = self.birth_acc_max * self.speed_inhibitor
             self.vel_max = self.birth_vel_max * self.speed_inhibitor
 
-            self.avatar = pygame.transform.smoothscale(img_hungry_predator, (self.width, self.height))
+            # Update image size 
+            if (self.width >= self.max_size) & (self.height >= self.max_size):
+                 self.avatar = pygame.transform.smoothscale(img_sleepy_predator, (self.width, self.height))
+            else:
+                self.avatar = pygame.transform.smoothscale(img_hungry_predator, (self.width, self.height))
 
             # Update image size
             # if (self.width >= self.max_size) & (self.height >= self.max_size):
