@@ -127,14 +127,12 @@ while simulation_running:
                         defense=max(0,creature.defense * random.uniform(.8,1.2)),
                         jerk=creature.birth_jerk * random.uniform(.8,1.2),
                         acc_max=creature.birth_acc_max * random.uniform(.8,1.2),
-                        vel_max=creature.birth_vel_max * random.uniform(.8,1.2),
-                        num_offspring_divisor=creature.num_offspring_divisor * random.uniform(.8,1.2),
+                        vel_max=max(1,creature.birth_vel_max * random.uniform(.8,1.2)),
+                        num_offspring_divisor=max(8,creature.num_offspring_divisor * random.uniform(.8,1.2)),
                         generation=creature.generation + 1,
-                        lineage = [*creature.lineage, *[creature.name]],
+                        lineage=[*creature.lineage, *[creature.name]],
                         search_distance=creature.search_distance * random.uniform(.8,1.2)
                     )
-                    print(offspring.lineage)
-                    print([*creature.lineage, *[creature.name]])
                     searching_herbivore_counter += 1
                     all_sprites.add(offspring)
                     creatures.add(offspring)
@@ -150,10 +148,10 @@ while simulation_running:
                         defense=max(0, creature.defense*random.uniform(.8,1.2)),
                         jerk=creature.jerk*random.uniform(.8,1.2),
                         acc_max=creature.acc_max*random.uniform(.8,1.2),
-                        vel_max=creature.vel_max*random.uniform(.8,1.2),
-                        num_offspring_divisor=creature.num_offspring_divisor*random.uniform(.8,1.2),
-                        generation=1,
-                        lineage=[],
+                        vel_max=max(1,creature.vel_max*random.uniform(.8,1.2)),
+                        num_offspring_divisor=max(8,creature.num_offspring_divisor*random.uniform(.8,1.2)),
+                        generation=creature.generation + 1,
+                        lineage=[*creature.lineage, *[creature.name]],
                         search_distance=creature.search_distance*random.uniform(.8,1.2),
                         attack=max(0, creature.attack*random.uniform(.8,1.2))
                     )
@@ -175,8 +173,9 @@ while simulation_running:
             all_sprites.add(food)
             foods.add(food)
 
-    while round_running:
+    num_eaten = 0 
 
+    while round_running:
         # This if statement makes sure that we can exit on quit command
         if not simulation_running: 
             round_running = False
@@ -215,6 +214,8 @@ while simulation_running:
                         if (entity.width + entity.attack) > (creature_collider.width + creature_collider.defense):
                             # Only eat the other creature if hungry
                             if entity.width < entity.max_size:
+                                #TODO: Log the creatures who got eaten
+                                num_eaten += 1
                                 entity.grow(int(creature_collider.width/1.5))
                                 creature_collider.kill()
             # Move sprites
@@ -246,13 +247,14 @@ while simulation_running:
                     entity.kill()
 
             print(round_stats_dt)
-            logs.append(round_stats_dt)
+            if len(round_stats_dt) > 0:
+                logs.append(round_stats_dt)
 
-            num_surviving = len(round_stats_dt[round_stats_dt.status == 'alive'])
-            num_dead = len(round_stats_dt[round_stats_dt.status == 'dead'])
+                num_surviving = len(round_stats_dt[round_stats_dt.status == 'alive'])
+                num_dead = len(round_stats_dt[round_stats_dt.status == 'dead'])
 
             pygame.display.flip()
-            simulation_running, round_running = round_transition_screen(2, screen, round_counter, num_surviving, num_dead)
+            simulation_running, round_running = round_transition_screen(2, screen, round_counter, num_surviving, num_dead, num_eaten)
             round_running = False
         
         # This is rendered last because I want it to be on top of everything else
@@ -267,5 +269,6 @@ while simulation_running:
         pygame.display.flip()
 
 logs_dt = pd.concat(logs)
+logs_dt = logs_dt.sort_values(by=['generation', 'type', 'status'], ascending=[True, False, False])
 print(logs_dt)
 logs_dt.to_csv('logs/'+str(time.time())+'.csv', index=False)

@@ -1,5 +1,6 @@
 import pygame 
 import random 
+import numpy as np
 from config import *
 from helper_functions.class_functions import get_coordinates_from_angle
 class Creature(pygame.sprite.Sprite):
@@ -108,3 +109,23 @@ class Creature(pygame.sprite.Sprite):
 
     def get_attributes(self):
         return vars(self).copy()
+
+    # I created this move function because if velocity is < 1
+    # The creature won't move, this is because move_ip requires at least a value > 1 to move
+    # Another method (better but more work) is to handle all the positioning within the class
+    def move(self, vel_hor, vel_vert):
+            if abs(vel_hor) > 1:
+                final_vel_hor = vel_hor
+            else:
+                if random.random() < abs(vel_hor):
+                    final_vel_hor = 1 * np.sign(vel_hor) # Move 1 pixel with probability vel_hor
+                else:
+                    final_vel_hor = vel_hor # The guy will not move
+            if abs(vel_vert) > 1:
+                final_vel_vert = vel_vert
+            else:
+                if random.random() < abs(vel_vert):
+                    final_vel_vert = 1 * np.sign(vel_vert) # Move 1 pixel with probability vel_vert
+                else:
+                    final_vel_vert = vel_vert # The guy will not move
+            self.rect.move_ip(final_vel_hor, final_vel_vert)

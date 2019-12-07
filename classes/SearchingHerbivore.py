@@ -92,7 +92,7 @@ class SearchingHerbivore(Creature):
         self.acc_hor = self.handle_max_speed(self.acc_hor, self.acc_max, abs(self.jerk))
 
         # hor, vert
-        self.rect.move_ip(int(self.vel_hor), int(self.vel_vert))
+        self.move(self.vel_hor, self.vel_vert)
         # Keep creature on the screen
         if self.rect.left < 0:
             self.rect.left = 0

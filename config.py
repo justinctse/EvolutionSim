@@ -2,32 +2,32 @@ import pygame
 
 SCREEN_WIDTH, SCREEN_HEIGHT = 1600, 900
 frame_rate = 60 # Base frame rate
-num_tomato = 30
-num_pumpkin = 10
-num_grape = 15
-num_basic_searching_herbivores = 1
-num_predator = 8
+num_tomato = 40
+num_pumpkin = 15
+num_grape = 20
+num_basic_searching_herbivores = 25
+num_predator = 5
 
 # Base Creature parameters for round 1
-base_max_size = 100
+base_max_size = 110
 base_size = 15
 base_defense = 10
 base_attack = 15
-base_jerk = .02
-base_acc_max = .25
+base_jerk = .03
+base_acc_max = .27
 base_vel_max = 2.5
-base_search_distance = 150
-base_num_offspring_divisor = 20
+base_search_distance = 300
+base_num_offspring_divisor = 15
 
-base_predator_max_size = 80
+base_predator_max_size = 70
 base_predator_size = 15
 base_predator_defense = 10
 base_predator_attack = 15
 base_predator_jerk = .03
-base_predator_acc_max = .35
+base_predator_acc_max = .3
 base_predator_vel_max = 3
-base_predator_search_distance = 300
-base_predator_num_offspring_divisor = 20
+base_predator_search_distance = 400
+base_predator_num_offspring_divisor = 15
 
 
 # Fields to skip when doing a stats dump

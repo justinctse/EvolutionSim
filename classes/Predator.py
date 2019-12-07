@@ -105,6 +105,7 @@ class Predator(Creature):
             self.vel_hor = self.vel_hor + self.acc_hor
         elif get_distance((self.rect[0], self.rect[1]), closest_point) < self.search_distance:
             # get right direction
+            # THE NOT MOVING PROBLEM IS HERE
             self.acc_vert = self.acc_vert + self.jerk * np.sign(closest_point[1] - self.rect[1])
             self.acc_hor = self.acc_hor + self.jerk * np.sign(closest_point[0] - self.rect[0])
             self.vel_vert = self.vel_vert + self.acc_vert
@@ -122,8 +123,8 @@ class Predator(Creature):
         self.acc_vert = self.handle_max_speed(self.acc_vert, self.acc_max, abs(self.jerk))
         self.acc_hor = self.handle_max_speed(self.acc_hor, self.acc_max, abs(self.jerk))
 
-        # hor, vert
-        self.rect.move_ip(int(self.vel_hor), int(self.vel_vert))
+        self.move(self.vel_hor, self.vel_vert)
+
         # Keep creature on the screen
         if self.rect.left < 0:
             self.rect.left = 0
