@@ -8,7 +8,7 @@ To run the simulation:
 The simulation ends on user input, or when there is a round with no herbivore offspring. 
 
 <p align="center">
-  <img src="./assets/screenshot_1.png">
+  <img src="./assets/preview.gif">
  </p>
 
 ## Creature Traits
