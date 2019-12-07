@@ -5,7 +5,7 @@ To run the simulation:
 1. Run `pip install -r requirements.txt` or install the requirements into a virtual environment.
 2. Run `python evolution_sim.py`
 
-The simulation ends on user input, or when there is a round with no offspring. 
+The simulation ends on user input, or when there is a round with no herbivore offspring. 
 
 <p align="center">
   <img src="./assets/screenshot_1.png">
