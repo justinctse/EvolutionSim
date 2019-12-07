@@ -59,7 +59,7 @@ class Predator(Creature):
         while True:
             x, y = random.randint(0, SCREEN_WIDTH), random.randint(0, SCREEN_HEIGHT)
             # If too close to the center reroll location
-            if get_distance((x,y), (SCREEN_WIDTH/2, SCREEN_HEIGHT/2)) < 400:
+            if get_distance((x,y), (SCREEN_WIDTH/2, SCREEN_HEIGHT/2)) < 800:
                 x, y = random.randint(0, SCREEN_WIDTH), random.randint(0, SCREEN_HEIGHT)
             else:
                 break

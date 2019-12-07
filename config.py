@@ -6,7 +6,7 @@ num_tomato = 40
 num_pumpkin = 15
 num_grape = 20
 num_basic_searching_herbivores = 25
-num_predator = 5
+num_predator = 0
 
 predators_can_eat_each_other = False
 
