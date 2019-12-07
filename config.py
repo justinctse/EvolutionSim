@@ -8,6 +8,8 @@ num_grape = 20
 num_basic_searching_herbivores = 25
 num_predator = 5
 
+predators_can_eat_each_other = False
+
 # Base Creature parameters for round 1
 base_max_size = 110
 base_size = 15

@@ -209,6 +209,8 @@ while simulation_running:
                 # He can collide with himself
                 creature_collisions = pygame.sprite.spritecollide(entity, creatures, dokill=False)
                 for creature_collider in creature_collisions:
+                    if (not predators_can_eat_each_other) and creature_collider.type == 'predator':
+                        continue
                     if creature_collider.name != entity.name:
                         # See if entity can eat the creature
                         if (entity.width + entity.attack) > (creature_collider.width + creature_collider.defense):
