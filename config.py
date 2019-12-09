@@ -5,7 +5,7 @@ frame_rate = 60 # Base frame rate
 num_tomato = 40
 num_pumpkin = 15
 num_grape = 20
-num_basic_searching_herbivores = 20
+num_basic_searching_herbivores = 25
 num_predator = 5
 
 predators_can_eat_each_other = False
@@ -25,11 +25,16 @@ base_predator_max_size = 70
 base_predator_size = 15
 base_predator_defense = 10
 base_predator_attack = 15
-base_predator_jerk = .03
-base_predator_acc_max = .3
-base_predator_vel_max = 3
+base_predator_jerk = .033
+base_predator_acc_max = .33
+base_predator_vel_max = 3.3
 base_predator_search_distance = 400
 base_predator_num_offspring_divisor = 15
+
+# The lower bound of mutation when passing traits
+round_trait_decrease_percent = .95
+# The upper bound of mutation when passing traits
+round_trait_increase_percent = 1.05
 
 
 # Fields to skip when doing a stats dump

@@ -111,3 +111,16 @@ def get_stats(creatures, round_counter):
         attributes['round'] = round_counter
         out.append(attributes)
     return pd.DataFrame(out)
+
+# Getting stats for a single creature who was eaten
+def get_stats_eaten_creature(entity, round_counter):
+    out = []
+    attributes = entity.get_attributes()
+    for key in skip_fields:
+        attributes.pop(key, None)
+    # Add sstatus for end of round
+    status = 'eaten'
+    attributes['status'] = status
+    attributes['round'] = round_counter
+    out.append(attributes)
+    return pd.DataFrame(out)

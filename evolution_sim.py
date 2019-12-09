@@ -5,7 +5,7 @@ import numpy as np
 import time
 import pandas as pd
 from config import *
-from helper_functions.utility_functions import pause, round_transition_screen, adjust_frame_rate, get_stats
+from helper_functions.utility_functions import pause, round_transition_screen, adjust_frame_rate, get_stats, get_stats_eaten_creature
 from classes.Creature import Creature 
 from classes.SearchingHerbivore import SearchingHerbivore
 from classes.BasicHerbivore import BasicHerbivore
@@ -46,41 +46,41 @@ predator_counter = 0
 
 # Create objects 
 for i in range(0, num_basic_searching_herbivores):
-    size = int(base_size*random.uniform(.8,1.2))
+    size = int(base_size*random.uniform(round_trait_decrease_percent,round_trait_increase_percent))
     creature = SearchingHerbivore(
         "searching_herbivore_" + str(searching_herbivore_counter),
-        max_size=int(base_max_size*random.uniform(.8,1.2)),
+        max_size=int(base_max_size*random.uniform(round_trait_decrease_percent,round_trait_increase_percent)),
         width=size,
         height=size,
-        defense=max(0, base_defense*random.uniform(.8,1.2)),
-        jerk=base_jerk*random.uniform(.8,1.2),
-        acc_max=base_acc_max*random.uniform(.8,1.2),
-        vel_max=base_vel_max*random.uniform(.8,1.2),
-        num_offspring_divisor=base_num_offspring_divisor*random.uniform(.8,1.2),
+        defense=max(0, base_defense*random.uniform(round_trait_decrease_percent,round_trait_increase_percent)),
+        jerk=base_jerk*random.uniform(round_trait_decrease_percent,round_trait_increase_percent),
+        acc_max=base_acc_max*random.uniform(round_trait_decrease_percent,round_trait_increase_percent),
+        vel_max=base_vel_max*random.uniform(round_trait_decrease_percent,round_trait_increase_percent),
+        num_offspring_divisor=base_num_offspring_divisor*random.uniform(round_trait_decrease_percent,round_trait_increase_percent),
         generation=1,
         lineage=[],
-        search_distance=base_search_distance*random.uniform(.8,1.2)
+        search_distance=base_search_distance*random.uniform(round_trait_decrease_percent,round_trait_increase_percent)
     )
     searching_herbivore_counter += 1
     all_sprites.add(creature)
     creatures.add(creature)
     herbivores.add(creature)
 for i in range(0, num_predator):
-    size = int(base_predator_size*random.uniform(.8,1.2))
+    size = int(base_predator_size*random.uniform(round_trait_decrease_percent,round_trait_increase_percent))
     creature = Predator(
         "predator_" + str(predator_counter),
-        max_size=int(base_predator_max_size*random.uniform(.8,1.2)),
+        max_size=int(base_predator_max_size*random.uniform(round_trait_decrease_percent,round_trait_increase_percent)),
         width=size,
         height=size,
-        defense=max(0, base_predator_defense*random.uniform(.8,1.2)),
-        jerk=base_predator_jerk*random.uniform(.8,1.2),
-        acc_max=base_predator_acc_max*random.uniform(.8,1.2),
-        vel_max=base_predator_vel_max*random.uniform(.8,1.2),
-        num_offspring_divisor=base_predator_num_offspring_divisor*random.uniform(.8,1.2),
+        defense=max(0, base_predator_defense*random.uniform(round_trait_decrease_percent,round_trait_increase_percent)),
+        jerk=base_predator_jerk*random.uniform(round_trait_decrease_percent,round_trait_increase_percent),
+        acc_max=base_predator_acc_max*random.uniform(round_trait_decrease_percent,round_trait_increase_percent),
+        vel_max=base_predator_vel_max*random.uniform(round_trait_decrease_percent,round_trait_increase_percent),
+        num_offspring_divisor=base_predator_num_offspring_divisor*random.uniform(round_trait_decrease_percent,round_trait_increase_percent),
         generation=1,
         lineage=[],
-        search_distance=base_predator_search_distance*random.uniform(.8,1.2),
-        attack=max(0, base_predator_attack*random.uniform(.8,1.2))
+        search_distance=base_predator_search_distance*random.uniform(round_trait_decrease_percent,round_trait_increase_percent),
+        attack=max(0, base_predator_attack*random.uniform(round_trait_decrease_percent,round_trait_increase_percent))
     )
     predator_counter += 1
     all_sprites.add(creature)
@@ -117,21 +117,21 @@ while simulation_running:
             # TODO: Move the num_offspring calculation to in the class
             if creature.type == 'searcher':
                 for i in range(0, max(1,int(creature.width/creature.num_offspring_divisor))):
-                    size = int(creature.birth_width * random.uniform(.8,1.2))
+                    size = max(8, int(creature.birth_width * random.uniform(round_trait_decrease_percent,round_trait_increase_percent)))
                     offspring = SearchingHerbivore(
                         "searching_herbivore_" + str(searching_herbivore_counter),
                         color=creature.color,
-                        max_size=int(creature.max_size * random.uniform(.8,1.2)),
+                        max_size=int(creature.max_size * random.uniform(round_trait_decrease_percent,round_trait_increase_percent)),
                         width=size,
                         height=size,
-                        defense=max(0,creature.defense * random.uniform(.8,1.2)),
-                        jerk=creature.birth_jerk * random.uniform(.8,1.2),
-                        acc_max=creature.birth_acc_max * random.uniform(.8,1.2),
-                        vel_max=max(1,creature.birth_vel_max * random.uniform(.8,1.2)),
-                        num_offspring_divisor=max(8,creature.num_offspring_divisor * random.uniform(.8,1.2)),
+                        defense=max(0,creature.defense * random.uniform(round_trait_decrease_percent,round_trait_increase_percent)),
+                        jerk=creature.birth_jerk * random.uniform(round_trait_decrease_percent,round_trait_increase_percent),
+                        acc_max=creature.birth_acc_max * random.uniform(round_trait_decrease_percent,round_trait_increase_percent),
+                        vel_max=max(1,creature.birth_vel_max * random.uniform(round_trait_decrease_percent,round_trait_increase_percent)),
+                        num_offspring_divisor=max(8,creature.num_offspring_divisor * random.uniform(round_trait_decrease_percent,round_trait_increase_percent)),
                         generation=creature.generation + 1,
                         lineage=[*creature.lineage, *[creature.name]],
-                        search_distance=creature.search_distance * random.uniform(.8,1.2)
+                        search_distance=creature.search_distance * random.uniform(round_trait_decrease_percent,round_trait_increase_percent)
                     )
                     searching_herbivore_counter += 1
                     all_sprites.add(offspring)
@@ -139,21 +139,21 @@ while simulation_running:
                     herbivores.add(offspring)
             elif creature.type == 'predator':
                 for i in range(0, max(1,int(creature.width/creature.num_offspring_divisor))):
-                    size = int(creature.birth_width*random.uniform(.8,1.2))
+                    size = max(8, int(creature.birth_width * random.uniform(round_trait_decrease_percent,round_trait_increase_percent)))
                     offspring = Predator(
                         "predator_" + str(predator_counter),
-                        max_size=int(creature.max_size*random.uniform(.8,1.2)),
+                        max_size=int(creature.max_size*random.uniform(round_trait_decrease_percent,round_trait_increase_percent)),
                         width=size,
                         height=size,
-                        defense=max(0, creature.defense*random.uniform(.8,1.2)),
-                        jerk=creature.jerk*random.uniform(.8,1.2),
-                        acc_max=creature.acc_max*random.uniform(.8,1.2),
-                        vel_max=max(1,creature.vel_max*random.uniform(.8,1.2)),
-                        num_offspring_divisor=max(8,creature.num_offspring_divisor*random.uniform(.8,1.2)),
+                        defense=max(0, creature.defense*random.uniform(round_trait_decrease_percent,round_trait_increase_percent)),
+                        jerk=creature.jerk*random.uniform(round_trait_decrease_percent,round_trait_increase_percent),
+                        acc_max=creature.acc_max*random.uniform(round_trait_decrease_percent,round_trait_increase_percent),
+                        vel_max=max(1,creature.vel_max*random.uniform(round_trait_decrease_percent,round_trait_increase_percent)),
+                        num_offspring_divisor=max(8,creature.num_offspring_divisor*random.uniform(round_trait_decrease_percent,round_trait_increase_percent)),
                         generation=creature.generation + 1,
                         lineage=[*creature.lineage, *[creature.name]],
-                        search_distance=creature.search_distance*random.uniform(.8,1.2),
-                        attack=max(0, creature.attack*random.uniform(.8,1.2))
+                        search_distance=creature.search_distance*random.uniform(round_trait_decrease_percent,round_trait_increase_percent),
+                        attack=max(0, creature.attack*random.uniform(round_trait_decrease_percent,round_trait_increase_percent))
                     )
                     predator_counter += 1
                     all_sprites.add(offspring)
@@ -216,7 +216,8 @@ while simulation_running:
                         if (entity.width + entity.attack) > (creature_collider.width + creature_collider.defense):
                             # Only eat the other creature if hungry
                             if entity.width < entity.max_size:
-                                #TODO: Log the creatures who got eaten
+                                # Logging creature who was eaten
+                                logs.append(get_stats_eaten_creature(entity, round_counter))
                                 num_eaten += 1
                                 entity.grow(int(creature_collider.width/1.5))
                                 creature_collider.kill()
