@@ -1,12 +1,14 @@
 import pygame
 
+multiplier = 1 #temp
+
 SCREEN_WIDTH, SCREEN_HEIGHT = 1600, 900
 frame_rate = 60 # Base frame rate
-num_tomato = 40
-num_pumpkin = 15
-num_grape = 20
-num_basic_searching_herbivores = 25
-num_predator = 5
+num_tomato = 40 * multiplier
+num_pumpkin = 15 * multiplier
+num_grape = 20 * multiplier
+num_basic_searching_herbivores = 25 * multiplier
+num_predator = 5 * multiplier
 
 predators_can_eat_each_other = False
 
@@ -21,20 +23,20 @@ base_vel_max = 2.5
 base_search_distance = 300
 base_num_offspring_divisor = 15
 
-base_predator_max_size = 70
+base_predator_max_size = 80
 base_predator_size = 15
 base_predator_defense = 10
 base_predator_attack = 15
 base_predator_jerk = .033
 base_predator_acc_max = .33
-base_predator_vel_max = 3.3
+base_predator_vel_max = 3.0
 base_predator_search_distance = 400
-base_predator_num_offspring_divisor = 15
+base_predator_num_offspring_divisor = 25
 
 # The lower bound of mutation when passing traits
-round_trait_decrease_percent = .95
+round_trait_decrease_percent = .85
 # The upper bound of mutation when passing traits
-round_trait_increase_percent = 1.05
+round_trait_increase_percent = 1.15
 
 
 # Fields to skip when doing a stats dump

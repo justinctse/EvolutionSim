@@ -147,8 +147,8 @@ while simulation_running:
                         height=size,
                         defense=max(0, creature.defense*random.uniform(round_trait_decrease_percent,round_trait_increase_percent)),
                         jerk=creature.jerk*random.uniform(round_trait_decrease_percent,round_trait_increase_percent),
-                        acc_max=creature.acc_max*random.uniform(round_trait_decrease_percent,round_trait_increase_percent),
-                        vel_max=max(1,creature.vel_max*random.uniform(round_trait_decrease_percent,round_trait_increase_percent)),
+                        acc_max=creature.birth_acc_max*random.uniform(round_trait_decrease_percent,round_trait_increase_percent),
+                        vel_max=max(1,creature.birth_vel_max*random.uniform(round_trait_decrease_percent,round_trait_increase_percent)),
                         num_offspring_divisor=max(8,creature.num_offspring_divisor*random.uniform(round_trait_decrease_percent,round_trait_increase_percent)),
                         generation=creature.generation + 1,
                         lineage=[*creature.lineage, *[creature.name]],
@@ -217,9 +217,9 @@ while simulation_running:
                             # Only eat the other creature if hungry
                             if entity.width < entity.max_size:
                                 # Logging creature who was eaten
-                                logs.append(get_stats_eaten_creature(entity, round_counter))
+                                logs.append(get_stats_eaten_creature(creature_collider, round_counter))
                                 num_eaten += 1
-                                entity.grow(int(creature_collider.width/1.5))
+                                entity.grow(int(creature_collider.width/1.25))
                                 creature_collider.kill()
             # Move sprites
             if entity.type == 'searcher':

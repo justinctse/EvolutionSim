@@ -52,6 +52,7 @@ class Predator(Creature):
         self.search_distance = search_distance
         self.avatar = pygame.transform.smoothscale(img_hungry_predator, (self.width, self.height))
         self.attack = attack
+        print(self.birth_vel_max)
 
         # Overwriting code in the base class
         # Spawn away from the center
@@ -59,7 +60,7 @@ class Predator(Creature):
         while True:
             x, y = random.randint(0, SCREEN_WIDTH), random.randint(0, SCREEN_HEIGHT)
             # If too close to the center reroll location
-            if get_distance((x,y), (SCREEN_WIDTH/2, SCREEN_HEIGHT/2)) < 800:
+            if get_distance((x,y), (SCREEN_WIDTH/2, SCREEN_HEIGHT/2)) < 700:
                 x, y = random.randint(0, SCREEN_WIDTH), random.randint(0, SCREEN_HEIGHT)
             else:
                 break
