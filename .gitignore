@@ -3,5 +3,5 @@ logs/*
 !logs/README.md
 !logs/example_1.csv
 sprite_creation
-analysis/
+analysis/*
 !analysis/example_1.ipynb
