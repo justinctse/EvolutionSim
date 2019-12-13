@@ -4,11 +4,11 @@ multiplier = 1 #temp
 
 SCREEN_WIDTH, SCREEN_HEIGHT = 1600, 900
 frame_rate = 60 # Base frame rate
-num_tomato = 40 * multiplier
-num_pumpkin = 15 * multiplier
-num_grape = 20 * multiplier
-num_basic_searching_herbivores = 25 * multiplier
-num_predator = 5 * multiplier
+num_tomato = 45 * multiplier
+num_pumpkin = 20 * multiplier
+num_grape = 25 * multiplier
+num_basic_searching_herbivores = 35 * multiplier
+num_predator = 8 * multiplier
 
 predators_can_eat_each_other = False
 

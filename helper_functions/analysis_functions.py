@@ -98,6 +98,11 @@ def get_joyplot(dt, trait, type=None, status=None):
     if status is not None:
         df = df[df.status == status]
     
+    if status is None: 
+        title = name_key[trait] + ' Distribution Over Time for ' + name_key[type]
+    else:
+        title = name_key[trait] + ' Distribution Over Time for ' + name_key[type] + 's Who Are ' + str(status)
+    
     # Do a safety check on the data
     grouped = df.groupby('generation')
     for generation, group_dt in grouped:
@@ -107,7 +112,7 @@ def get_joyplot(dt, trait, type=None, status=None):
     labels=list(set(df.generation))
     fig, axes = joypy.joyplot(df, by='generation', column=trait, labels=labels,
                               range_style='own', grid='y', linewidth=1, legend=False, figsize=(8,8),
-                              title=name_key[trait] + ' Distribution Over Time for ' + name_key[type] + str(status), 
+                              title=title, 
                               colormap=cm.OrRd, fade=False)
     axes[-1].set_xlabel(name_key[trait])
     axes[int(len(axes)/2)].set_ylabel('Generation')
