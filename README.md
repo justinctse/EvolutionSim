@@ -67,6 +67,10 @@ Press `Escape` or the `X` button to exit the simulation. Press the `Left` and `R
 After the simulation ends, a csv file of all the creatures in the simulation will be written into the `logs` folder. 
 
 ## Analysis
-Analysis of some interesting simulations can be found in the `analysis` folder.
+Analysis of some interesting simulations can be found in the `analysis` folder. The first analysis [here](https://github.com/justinctse/EvolutionSim/blob/master/analysis/example_1.ipynb) serves as a tutorial.
 
-TODO: Put example here. 
+<p align="center">
+  <img src="./assets/analysis_screenshot.png">
+
+*The distribution of velocity for Herbivores over time for a single run. Check the link above to see more insights like this.*
+ </p>
