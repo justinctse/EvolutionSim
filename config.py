@@ -7,8 +7,8 @@ frame_rate = 60 # Base frame rate
 num_tomato = 45 * multiplier
 num_pumpkin = 20 * multiplier
 num_grape = 25 * multiplier
-num_basic_searching_herbivores = 35 * multiplier
-num_predator = 8 * multiplier
+num_basic_searching_herbivores = 25 * multiplier
+num_predator = 5 * multiplier
 
 predators_can_eat_each_other = False
 
@@ -17,19 +17,20 @@ base_max_size = 110
 base_size = 15
 base_defense = 10
 base_attack = 15
-base_jerk = .03
-base_acc_max = .27
-base_vel_max = 2.5
+base_jerk = .012
+base_acc_max = .15
+base_vel_max = 2.0
 base_search_distance = 300
 base_num_offspring_divisor = 15
+base_fear = 500
 
 base_predator_max_size = 80
 base_predator_size = 15
 base_predator_defense = 10
 base_predator_attack = 15
-base_predator_jerk = .033
-base_predator_acc_max = .33
-base_predator_vel_max = 3.0
+base_predator_jerk = .015
+base_predator_acc_max = .2
+base_predator_vel_max = 2.2
 base_predator_search_distance = 400
 base_predator_num_offspring_divisor = 25
 

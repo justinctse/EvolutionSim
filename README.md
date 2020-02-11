@@ -38,6 +38,8 @@ The following traits can be passed down to the next generation.
 
 `search_distance` - The distance that a creature can sense food at. If there is no food within the search distance, the creature will move randomly. Carnivores will only be attracted to creatures that they can consume.
 
+`fear` - The distance that a herbivore can sense carnivores at. Herbivores will move away from carnivores that they can sense. 
+
 ### Carnivore Specific Traits
 
 `attack` - This is part of the formula that determines if a carnivore can eat a creature. Higher attack means that it is easier to eat other creatures.

@@ -12,11 +12,6 @@ from classes.BasicHerbivore import BasicHerbivore
 from classes.Predator import Predator
 from classes.Foods import Tomato, Grape, Pumpkin
 
-#TODO: Change color based on primary stat
-#TODO: Display round in corner
-
-# Import pygame.locals for easier access to key coordinates
-# Updated to conform to flake8 and black standards
 from pygame.locals import (
     RLEACCEL,
     K_SPACE,
@@ -38,6 +33,7 @@ bg = pygame.image.load("assets/background_1600_900.png").convert_alpha()
 all_sprites = pygame.sprite.Group()
 creatures = pygame.sprite.Group()
 herbivores = pygame.sprite.Group()
+predators = pygame.sprite.Group()
 foods = pygame.sprite.Group()
 
 # Counters to name the creatures
@@ -59,7 +55,8 @@ for i in range(0, num_basic_searching_herbivores):
         num_offspring_divisor=base_num_offspring_divisor*random.uniform(round_trait_decrease_percent,round_trait_increase_percent),
         generation=1,
         lineage=[],
-        search_distance=base_search_distance*random.uniform(round_trait_decrease_percent,round_trait_increase_percent)
+        search_distance=base_search_distance*random.uniform(round_trait_decrease_percent,round_trait_increase_percent),
+        fear=base_fear*random.uniform(round_trait_decrease_percent,round_trait_increase_percent)
     )
     searching_herbivore_counter += 1
     all_sprites.add(creature)
@@ -85,6 +82,7 @@ for i in range(0, num_predator):
     predator_counter += 1
     all_sprites.add(creature)
     creatures.add(creature)
+    predators.add(creature)
 
 # TODO: Move randomness out of food and into the constructor
 for i in range(0,num_tomato):
@@ -131,7 +129,8 @@ while simulation_running:
                         num_offspring_divisor=max(8,creature.num_offspring_divisor * random.uniform(round_trait_decrease_percent,round_trait_increase_percent)),
                         generation=creature.generation + 1,
                         lineage=[*creature.lineage, *[creature.name]],
-                        search_distance=creature.search_distance * random.uniform(round_trait_decrease_percent,round_trait_increase_percent)
+                        search_distance=creature.search_distance * random.uniform(round_trait_decrease_percent,round_trait_increase_percent),
+                        fear = creature.fear * random.uniform(round_trait_decrease_percent,round_trait_increase_percent)
                     )
                     searching_herbivore_counter += 1
                     all_sprites.add(offspring)
@@ -158,6 +157,7 @@ while simulation_running:
                     predator_counter += 1
                     all_sprites.add(offspring)
                     creatures.add(offspring)
+                    predators.add(offspring)
             creature.kill()
 
         for i in range(0,num_tomato):
@@ -223,7 +223,7 @@ while simulation_running:
                                 creature_collider.kill()
             # Move sprites
             if entity.type == 'searcher':
-                entity.update_position(foods)
+                entity.update_position(foods, predators)
             if entity.type == 'predator':
                 entity.update_position(creatures)
 

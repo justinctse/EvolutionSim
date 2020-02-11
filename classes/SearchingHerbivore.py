@@ -25,7 +25,8 @@ class SearchingHerbivore(Creature):
         num_offspring_divisor=20,
         generation=None,
         lineage=None,
-        search_distance = 100
+        search_distance = 100,
+        fear = 50
     ):
         Creature.__init__(
             self,
@@ -48,6 +49,7 @@ class SearchingHerbivore(Creature):
         )
         self.type = 'searcher'
         self.search_distance = search_distance
+        self.fear = fear
     
     # Get the closest food given an iterable of foods
     def get_closest_food(self, foods):
@@ -63,19 +65,50 @@ class SearchingHerbivore(Creature):
                 min_distance = distance
         return closest_point
 
-    # TODO: Create a better death function
+    def get_closest_predator(self, predators):
+        if len(predators) == 0:
+            return None
+        closest_point = None
+        min_distance = 99999
+        for predator in predators:
+            # If predator is full then we don't worry about him
+            if predator.width >= predator.max_size:
+                continue
+            # if predator can't kill you then don't worry about him
+            if (predator.width + predator.attack) < (self.width + self.defense):
+                continue
+            coordinates = (predator.rect[0], predator.rect[1])
+            distance = get_distance((self.rect[0], self.rect[1]), coordinates)
+            if distance < min_distance:
+                closest_point = coordinates
+                min_distance = distance
+        return closest_point
 
-    def update_position(self, foods):
-        closest_point = self.get_closest_food(foods)
-        if closest_point is None:
+    def update_position(self, foods, predators):
+        closest_point_food = self.get_closest_food(foods)
+        closest_point_predator = self.get_closest_predator(predators)
+
+        closest_distance_food = get_distance((self.rect[0], self.rect[1]), closest_point_food)
+        try:
+            closest_distance_predator = get_distance((self.rect[0], self.rect[1]), closest_point_predator)
+        except:
+            closest_distance_predator = 99999
+        # Running from predators takes precedence over food
+        if closest_point_food is None:
             self.acc_vert = 0
             self.acc_hor = 0
             self.vel_vert = 0
             self.vel_hor = 0
-        elif get_distance((self.rect[0], self.rect[1]), closest_point) < self.search_distance:
+        elif closest_distance_predator < self.fear:
+            # move away from the predator
+            self.acc_vert = self.acc_vert - self.jerk * np.sign(closest_point_predator[1] - self.rect[1])
+            self.acc_hor = self.acc_hor - self.jerk * np.sign(closest_point_predator[0] - self.rect[0])
+            self.vel_vert = self.vel_vert - self.acc_vert
+            self.vel_hor = self.vel_hor - self.acc_hor
+        elif closest_distance_food < self.search_distance:
             # get right direction
-            self.acc_vert = self.acc_vert + self.jerk * np.sign(closest_point[1] - self.rect[1])
-            self.acc_hor = self.acc_hor + self.jerk * np.sign(closest_point[0] - self.rect[0])
+            self.acc_vert = self.acc_vert + self.jerk * np.sign(closest_point_food[1] - self.rect[1])
+            self.acc_hor = self.acc_hor + self.jerk * np.sign(closest_point_food[0] - self.rect[0])
             self.vel_vert = self.vel_vert + self.acc_vert
             self.vel_hor = self.vel_hor + self.acc_hor
         else:
