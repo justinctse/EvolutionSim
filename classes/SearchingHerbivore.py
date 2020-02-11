@@ -65,6 +65,7 @@ class SearchingHerbivore(Creature):
                 min_distance = distance
         return closest_point
 
+    # Get the closest predator who is a threat
     def get_closest_predator(self, predators):
         if len(predators) == 0:
             return None
@@ -88,7 +89,10 @@ class SearchingHerbivore(Creature):
         closest_point_food = self.get_closest_food(foods)
         closest_point_predator = self.get_closest_predator(predators)
 
-        closest_distance_food = get_distance((self.rect[0], self.rect[1]), closest_point_food)
+        try:
+            closest_distance_food = get_distance((self.rect[0], self.rect[1]), closest_point_food)
+        except:
+            closest_distance_food = 99999
         try:
             closest_distance_predator = get_distance((self.rect[0], self.rect[1]), closest_point_predator)
         except:
